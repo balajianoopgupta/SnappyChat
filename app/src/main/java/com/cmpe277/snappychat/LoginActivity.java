@@ -13,6 +13,7 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
@@ -134,15 +135,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        // Pass the activity result back to the Facebook SDK
-//        mCallbackManager.onActivityResult(requestCode, resultCode, data);
-//    }
-
-
     private void handleFacebookAccessToken(AccessToken accessToken) {
     }
 
@@ -180,20 +172,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         startActivityForResult(signInIntent, RC_SIGN_IN_GOOGLE);
 
     }
-
-    public static void googleSignOut(){
-        mAuth.signOut();
-
-//        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-//                new ResultCallback<Status>() {
-//                    @Override
-//                    public void onResult(Status status) {
-//                        if(status.isSuccess()) {
-//                        }
-//                    }
-//                });
-    }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

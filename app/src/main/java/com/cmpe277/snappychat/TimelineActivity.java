@@ -31,9 +31,8 @@ public class TimelineActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                LoginActivity.googleSignOut();
-                startActivity(new Intent(TimelineActivity.this,LoginActivity.class));
-
+                FirebaseAuth.getInstance().signOut();
+                finish();
             }
         });
     }
