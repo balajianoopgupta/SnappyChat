@@ -31,13 +31,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 import static android.R.attr.data;
 
-public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = "LoginActiivty";
     private static final int RC_SIGN_IN_GOOGLE = 1;
@@ -57,8 +58,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         setContentView(R.layout.activity_login);
 
-        //Facebook
-        // Initialize Facebook Login button
+        //Facebook Sign In
+        //Initialize Facebook Login button
         mCallbackManager = CallbackManager.Factory.create();
         LoginButton loginButton = (LoginButton) findViewById(R.id.facebook_login_button);
         loginButton.setReadPermissions("email", "public_profile");
@@ -83,19 +84,17 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         });
 
 
-        //Google
+        //Google Sign In
         googleSignInButton = (SignInButton) findViewById(R.id.google_sign_in_button);
         googleSignInButton.setSize(SignInButton.SIZE_STANDARD);
 
-        // Configure sign-in to request the user's ID, email address, and basic
-        // profile. ID and basic profile are included in DEFAULT_SIGN_IN
+        // Configure sign-in to request the user's ID, email address, and basic profile. ID and basic profile are included in DEFAULT_SIGN_IN
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .build();
 
-        // Build a GoogleApiClient with access to the Google Sign-In API and the
-        // options specified by gso.
+        // Build a GoogleApiClient with access to the Google Sign-In API and the options specified by gso.
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener(){
 
@@ -107,7 +106,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-        findViewById(R.id.google_sign_in_button).setOnClickListener(this);
+        findViewById(R.id.google_sign_in_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                googleSignIn();
+            }
+        });
 
         //get the shared instance of the FirebaseAuth object
         mAuth = FirebaseAuth.getInstance();
@@ -131,8 +135,30 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         };
     }
 
-    private void handleFacebookAccessToken(AccessToken accessToken) {
+    private void handleFacebookAccessToken(AccessToken token) {
+        Log.d(TAG, "handleFacebookAccessToken:" + token);
+
+        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
+
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "signInWithCredential", task.getException());
+                            Toast.makeText(LoginActivity.this, "Facebook Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+
+                        // ...
+                    }
+                });
     }
+
 
     @Override
     public void onStart() {
@@ -154,15 +180,15 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.google_sign_in_button:
-                googleSignIn();
-                break;
-            // ...
-        }
-    }
+//    @Override
+//    public void onClick(View view) {
+//        switch (view.getId()) {
+//            case R.id.google_sign_in_button:
+//                googleSignIn();
+//                break;
+//            // ...
+//        }
+//    }
 
     private void googleSignIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
@@ -188,15 +214,16 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
             } else {
                 // Google Sign In failed, update UI appropriately
-
-                //for facebook
-                mCallbackManager.onActivityResult(requestCode, resultCode, data);
+                Toast.makeText(this, "Google Sign In failed", Toast.LENGTH_SHORT).show();
             }
+        }
+        else{
+            //for facebook
+            mCallbackManager.onActivityResult(requestCode, resultCode, data);
         }
     }
 
-    //After a user successfully signs in, get an ID token from the GoogleSignInAccount object,
-    //exchange it for a Firebase credential, and authenticate with Firebase using the Firebase credential
+    //After a user successfully signs in, get an ID token from the GoogleSignInAccount object, exchange it for a Firebase credential, and authenticate with Firebase using the Firebase credential
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
         showProgressDialog();
