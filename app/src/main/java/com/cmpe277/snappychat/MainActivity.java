@@ -43,10 +43,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new HomeFragment(), "HomeFragment");
-        adapter.addFragment(new ChatFragment(), "ChatFragment");
-        adapter.addFragment(new FriendsFragment(), "FriendsFragment");
-        adapter.addFragment(new ProfileFragment(), "ProfileFragment");
+        adapter.addFragment(new HomeFragment(), "Home");
+        adapter.addFragment(new ChatFragment(), "Chat");
+        adapter.addFragment(new FriendsFragment(), "Friends");
+        adapter.addFragment(new ProfileFragment(), "Profile");
         viewPager.setAdapter(adapter);
     }
 
