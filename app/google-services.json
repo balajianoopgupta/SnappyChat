@@ -15,21 +15,36 @@
       },
       "oauth_client": [
         {
-          "client_id": "822694277423-27rccnl3rptm94n6i9sphuh6tqo5422e.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.cmpe277.snappychat",
-            "certificate_hash": "C17EA5162C4F91C8090B283AC2AB086790D202D4"
-          }
-        },
+          "client_id": "822694277423-a3h3fm5l7a8i5jqk4n1ppis91qce4a8s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
         {
-          "client_id": "822694277423-pf0b73a41jp86n9s7qib78eofmnuk2ck.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.cmpe277.snappychat",
-            "certificate_hash": "3381C7ADE465C1FC2DDFDC4913E6B1C7B50F5F39"
-          }
+          "current_key": "AIzaSyCewfgdUUUQd76nq46EcOHiv-FCnsqaj0c"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
         },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:822694277423:android:67d74df4c2d0864a",
+        "android_client_info": {
+          "package_name": "strings.xml"
+        }
+      },
+      "oauth_client": [
         {
           "client_id": "822694277423-a3h3fm5l7a8i5jqk4n1ppis91qce4a8s.apps.googleusercontent.com",
           "client_type": 3
@@ -45,13 +60,8 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "822694277423-a3h3fm5l7a8i5jqk4n1ppis91qce4a8s.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2

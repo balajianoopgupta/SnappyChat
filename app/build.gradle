@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.0"
+    buildToolsVersion "25.0.1"
     defaultConfig {
         applicationId "com.cmpe277.snappychat"
         minSdkVersion 15
@@ -25,10 +25,10 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:25.0.1'
-
     compile "com.google.firebase:firebase-auth:9.2.0"
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
     compile 'com.google.android.gms:play-services-auth:9.2.0'
 
     testCompile 'junit:junit:4.12'
 }
+apply plugin: 'com.google.gms.google-services'
