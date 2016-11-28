@@ -31,8 +31,40 @@ public class TimelineActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+//                FirebaseAuth.getInstance().signOut();
+//                LoginActivity.signOut();
+//                finish();
+                logOut();
+            }
+        });
+    }
+
+    public void logOut(){
+
+        LoginActivity.mGoogleApiClient.connect();
+        LoginActivity.mGoogleApiClient.registerConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+            @Override
+            public void onConnected(@Nullable Bundle bundle) {
+
                 FirebaseAuth.getInstance().signOut();
-                finish();
+                if(LoginActivity.mGoogleApiClient.isConnected()) {
+                    Auth.GoogleSignInApi.signOut(LoginActivity.mGoogleApiClient).setResultCallback(new ResultCallback<Status>() {
+                        @Override
+                        public void onResult(@NonNull Status status) {
+                            if (status.isSuccess()) {
+                                Log.d(TAG, "User Logged out");
+                                Intent intent = new Intent(TimelineActivity.this, LoginActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onConnectionSuspended(int i) {
+                Log.d(TAG, "Google API Client Connection Suspended");
             }
         });
     }

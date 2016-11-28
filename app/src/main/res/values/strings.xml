@@ -2,4 +2,5 @@
     <string name="app_name">SnappyChat</string>
     <string name="facebook_app_id">369521223399855</string>
     <string name="fb_login_protocol_scheme">fb369521223399855</string>
+    <string name="loading">Signing In</string>
 </resources>

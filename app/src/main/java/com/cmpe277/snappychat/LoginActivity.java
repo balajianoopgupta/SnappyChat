@@ -1,7 +1,9 @@
 package com.cmpe277.snappychat;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -44,7 +46,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private FirebaseAuth.AuthStateListener mAuthListener;
     public static FirebaseAuth mAuth;
     private CallbackManager mCallbackManager;
-
+    public ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,33 +83,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         });
 
 
-
-
         //Google
         googleSignInButton = (SignInButton) findViewById(R.id.google_sign_in_button);
         googleSignInButton.setSize(SignInButton.SIZE_STANDARD);
-
-        //get the shared instance of the FirebaseAuth object
-        mAuth = FirebaseAuth.getInstance();
-
-        //Set up an AuthStateListener that responds to changes in the user's sign-in state
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-
-                    startActivity(new Intent(LoginActivity.this,TimelineActivity.class));
-                } else {
-                    // User is signed out
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
-                }
-                // ...
-            }
-        };
-
 
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN
@@ -131,8 +109,26 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         findViewById(R.id.google_sign_in_button).setOnClickListener(this);
 
+        //get the shared instance of the FirebaseAuth object
+        mAuth = FirebaseAuth.getInstance();
 
+        //Set up an AuthStateListener that responds to changes in the user's sign-in state
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
 
+                    startActivity(new Intent(LoginActivity.this,TimelineActivity.class));
+                } else {
+                    // User is signed out
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                }
+                // ...
+            }
+        };
     }
 
     private void handleFacebookAccessToken(AccessToken accessToken) {
@@ -154,7 +150,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Toast.makeText(this,"In onConnectionFailed : "+connectionResult.getErrorMessage(),Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "onConnectionFailed:" + connectionResult);
+        Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -200,10 +197,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     //After a user successfully signs in, get an ID token from the GoogleSignInAccount object,
     //exchange it for a Firebase credential, and authenticate with Firebase using the Firebase credential
-
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
-
+        showProgressDialog();
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
@@ -219,9 +215,25 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }
-                        // ...
+                        hideProgressDialog();
                     }
                 });
+    }
+
+    public void showProgressDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setMessage(getString(R.string.loading));
+            mProgressDialog.setIndeterminate(true);
+        }
+
+        mProgressDialog.show();
+    }
+
+    public void hideProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+        }
     }
 
 }
