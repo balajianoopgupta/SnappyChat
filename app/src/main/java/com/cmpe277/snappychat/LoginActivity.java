@@ -48,7 +48,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     public static FirebaseAuth mAuth;
     private CallbackManager mCallbackManager;
     public ProgressDialog mProgressDialog;
-
+    private static final String EMailTAG = "cmpe277.snappychat.EmailID";
+    private GoogleSignInAccount account;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,8 +125,20 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 if (user != null) {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                    Intent main=new Intent(LoginActivity.this,MainActivity.class);
+                    main.putExtra(EMailTAG,user.getEmail());
+                    //Log.i(TAG,"Email: "+account.getEmail());
+                    final String loginemaild=user.getEmail();
+                    new Thread(new Runnable() {
+                        public void run() {
+                            AndroidChatClient client=AndroidChatClient.getInstance();
+                            client.createconnection("192.168.0.130", 9999,loginemaild);
+                        }
+                    }).start();
 
-                    startActivity(new Intent(LoginActivity.this,MainActivity.class));
+
+
+                    startActivity(main);
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
@@ -205,7 +218,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
                 // Google Sign In was successful, authenticate with Firebase
-                GoogleSignInAccount account = result.getSignInAccount();
+                 account = result.getSignInAccount();
 
                 Log.i(TAG,"ID: "+account.getId());
                 Log.i(TAG,"Email: "+account.getId());

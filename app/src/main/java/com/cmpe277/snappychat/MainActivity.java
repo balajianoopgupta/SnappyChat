@@ -8,9 +8,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-
+import android.content.Intent;
 import com.google.android.gms.common.api.GoogleApiClient;
-
+import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,11 +22,21 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
-
+    private String Loginemail="";
+    private static final String EMailTAG = "cmpe277.snappychat.EmailID";
+    private Bundle fragmentbundle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Intent intent = getIntent();
+        Loginemail = intent.getStringExtra(EMailTAG);
+
+        Log.i("EmailID:",Loginemail);
+
+        fragmentbundle=new Bundle();
+        fragmentbundle.putString("EmailID", Loginemail);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -43,10 +53,23 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new HomeFragment(), "Home");
-        adapter.addFragment(new ChatFragment(), "Chat");
-        adapter.addFragment(new FriendsFragment(), "Friends");
-        adapter.addFragment(new ProfileFragment(), "Profile");
+
+        HomeFragment homefragment = new HomeFragment();
+        homefragment.setArguments(fragmentbundle);
+
+        ChatFragment chatfragment=new ChatFragment();
+        chatfragment.setArguments(fragmentbundle);
+
+        FriendsFragment friendsfragment=new FriendsFragment();
+        friendsfragment.setArguments(fragmentbundle);
+
+        ProfileFragment profilefragment=new ProfileFragment();
+        profilefragment.setArguments(fragmentbundle);
+
+        adapter.addFragment(homefragment, "Home");
+        adapter.addFragment(chatfragment, "Chat");
+        adapter.addFragment(friendsfragment, "Friends");
+        adapter.addFragment(profilefragment, "Profile");
         viewPager.setAdapter(adapter);
     }
 
