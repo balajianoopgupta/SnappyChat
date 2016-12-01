@@ -19,7 +19,7 @@ public class AndroidChatClient implements Runnable {
     private AndroidChatClientThread client    = null;
     public ChatMessage returnmessage=new ChatMessage();
     public String Loginemail="";
-    public boolean send=true;
+    public boolean send=false;
     public ChatMessage sendChatMessage=new ChatMessage();
     protected AndroidChatClient(){
 
@@ -35,9 +35,15 @@ public class AndroidChatClient implements Runnable {
         Log.i("Connection","Establishing connection. Please wait ...");
         try
         {
-            socket = new Socket(serverName, serverPort);
+            if(socket==null){
+                socket = new Socket(serverName, serverPort);
+            }
+            else{
+                Log.i("socket","socket active");
+            }
             Log.i("Connection","Connected: " + socket);
             Loginemail=email;
+            open();
             start();
         }
         catch(UnknownHostException uhe)
@@ -61,6 +67,11 @@ public class AndroidChatClient implements Runnable {
         {
             if(send==true) {
                 try {
+                    Log.i("write","write to stream");
+                    if(sendChatMessage.command!=null)
+                        Log.i("command",sendChatMessage.command);
+                    else
+                        Log.i("command","null command");
                     dataOutputStream.writeObject(sendChatMessage);
                     dataOutputStream.flush();
                     send=false;
@@ -73,20 +84,23 @@ public class AndroidChatClient implements Runnable {
         }
     }
     public void handle(ChatMessage chmsg) {
-        if (chmsg!=null && chmsg.message.equals(".bye"))
+        Log.i("Res","response recvd");
+        if (chmsg!=null && chmsg.command.equals("RESPONSE_LOGOUT"))
         {
+
             Log.i("Connection", "Good bye. Press RETURN to exit ...");
             stop();
         } else {
             returnmessage=chmsg;
             Log.i("Command",returnmessage.command);
             Log.i("Message:",returnmessage.message);
+
         }
+
     }
     public void start() throws IOException
     {
-        outputStream = socket.getOutputStream();
-        dataOutputStream = new ObjectOutputStream(outputStream);
+
         ChatMessage chatmsg=new ChatMessage();
         chatmsg.email=Loginemail;
         try {
@@ -105,6 +119,23 @@ public class AndroidChatClient implements Runnable {
             thread.start();
         }
     }
+    public void open()
+    {
+        try
+        {
+            if(outputStream==null) {
+                outputStream = socket.getOutputStream();
+            }
+            if(dataOutputStream==null) {
+                dataOutputStream = new ObjectOutputStream(outputStream);
+            }
+        }
+        catch(IOException ioe)
+        {
+            System.out.println("Error getting input stream: " + ioe);
+            client.stop();
+        }
+    }
     public void stop()
     {
         if (thread != null)
@@ -113,8 +144,19 @@ public class AndroidChatClient implements Runnable {
         }
         try
         {
-            if (dataOutputStream != null)  dataOutputStream.close();
-            if (socket    != null)  socket.close();
+            if (dataOutputStream != null) {
+                dataOutputStream.close();
+                dataOutputStream=null;
+            }
+            if(outputStream!=null)
+            {
+                outputStream.close();
+                outputStream=null;
+            }
+            if (socket    != null)  {
+                socket.close();
+                socket=null;
+            }
         }
         catch(IOException ioe)
         {

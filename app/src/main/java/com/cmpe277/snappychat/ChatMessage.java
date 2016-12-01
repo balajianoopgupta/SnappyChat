@@ -19,5 +19,6 @@ public class ChatMessage implements Serializable {
     public String profession;
     public String aboutme;
     public String interests;
+
 }
 

@@ -40,6 +40,7 @@ public class ProfileFragment extends Fragment {
     EditText location;
 
     String strnickname="";
+    View andview;
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -58,33 +59,7 @@ public class ProfileFragment extends Fragment {
         Loginemail = bundle.getString("EmailID");
         Log.i("Bundle_Login",Loginemail);
 
-        new Thread(new Runnable() {
-            public void run() {
-                AndroidChatClient chatClient=AndroidChatClient.getInstance();
-                chatClient.sendChatMessage=new ChatMessage();
-                chatClient.sendChatMessage.command="GET_PROFILE";
-                chatClient.send=true;
-                boolean checkresponse=false;
-                while(!checkresponse){
-                    // Log.i("herer","response");
-                    if(chatClient.returnmessage!=null && chatClient.returnmessage.command!=null) {
-                        if (chatClient.returnmessage.command.equals("RESPONSE_GET_PROFILE")) {
-                            ChatMessage chmessage = new ChatMessage();
-                            chmessage = chatClient.returnmessage;
-                            checkresponse = true;
-                            if (!chmessage.message.equals("FAILURE")) {
-                                //update profile
-                                Log.i("Nickname", chmessage.nickname);
 
-                                //email.setText(chmessage.email);
-                                //location.setText(chmessage.location);
-                            }
-                        }
-                    }
-
-                }
-            }
-        }).start();
 
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
@@ -95,7 +70,12 @@ public class ProfileFragment extends Fragment {
             mListener.onFragmentInteraction(uri);
         }
     }*/
-
+    public void UpdateProfileUI(String res_name,String res_email){
+        //nickname = (EditText) andview.findViewById(R.id.Nickname);
+        //email = (EditText) andview.findViewById(R.id.Email);
+        nickname.setText(res_name);
+        email.setText(res_email);
+    }
     @Override
     public void onViewCreated (View view,
                                Bundle savedInstanceState){
@@ -122,13 +102,50 @@ public class ProfileFragment extends Fragment {
                 startActivityForResult(i, RESULT_LOAD_IMAGE);
             }
         });
-
-        imageView = (ImageView) view.findViewById(R.id.imgView);
+        andview=view;
         nickname = (EditText) view.findViewById(R.id.Nickname);
         email = (EditText) view.findViewById(R.id.Email);
+        imageView = (ImageView) view.findViewById(R.id.imgView);
+
         location = (EditText) view.findViewById(R.id.Location);
 
-        nickname.setText("saasd");
+        new Thread(new Runnable() {
+            public void run() {
+                AndroidChatClient chatClient=AndroidChatClient.getInstance();
+                chatClient.sendChatMessage=new ChatMessage();
+                chatClient.sendChatMessage.command="GET_PROFILE";
+                Log.i("send","Setting to true");
+                chatClient.send=true;
+                boolean checkresponse=false;
+                while(!checkresponse){
+                    // Log.i("herer","response");
+                    if(chatClient.returnmessage!=null && chatClient.returnmessage.command!=null) {
+                        if (chatClient.returnmessage.command.equals("RESPONSE_GET_PROFILE")) {
+                            //ChatMessage chmessage = new ChatMessage();
+                            final ChatMessage chmessage = chatClient.returnmessage;
+                            checkresponse = true;
+
+                            if (!chmessage.message.equals("FAILURE")) {
+                                //update profile
+                                Log.i("Nname", chmessage.nickname);
+                                // nickname.setText(chmessage.nickname);
+                                //email.setText(chmessage.email);
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        // This code will always run on the UI thread, therefore is safe to modify UI elements.
+                                        UpdateProfileUI(chmessage.nickname,chmessage.email);
+                                    }
+                                });
+
+
+                            }
+                        }
+                    }
+
+                }
+            }
+        }).start();
 
 
 
@@ -187,6 +204,21 @@ public class ProfileFragment extends Fragment {
                                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                                 startActivity(intent);
                                 getActivity().finish();
+
+
+
+                                new Thread(new Runnable() {
+                                    public void run() {
+                                        AndroidChatClient chatClient=AndroidChatClient.getInstance();
+                                        chatClient.sendChatMessage=new ChatMessage();
+                                        chatClient.sendChatMessage.command="LOGOUT";
+                                        Log.i("send","Setting to true");
+                                        chatClient.send=true;
+
+                                    }
+                                }).start();
+
+
                             }
                         }
                     });
