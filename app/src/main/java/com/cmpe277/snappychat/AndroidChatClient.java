@@ -104,10 +104,12 @@ public class AndroidChatClient implements Runnable {
     public void handleList(Stack<ChatMessage> chmsg)
     {
        // send=true;
-        System.out.println("Command:"+returnlistmsg.peek().command);
-        System.out.println("Message:"+returnlistmsg.peek().message);
-        returnmessage=returnlistmsg.pop();
+        returnmessage=chmsg.pop();
         returnlistmsg=chmsg;
+        System.out.println("Command:"+returnmessage.command);
+        System.out.println("Message:"+returnmessage.message);
+
+
        /* while(!returnlistmsg.isEmpty()){
             ChatMessage retmsg=returnlistmsg.pop();
             System.out.println("Email:"+retmsg.email);
