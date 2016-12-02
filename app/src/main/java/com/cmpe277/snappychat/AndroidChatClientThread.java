@@ -6,7 +6,7 @@ package com.cmpe277.snappychat;
 
 import java.net.*;
 import java.io.*;
-
+import android.util.Log;
 public class AndroidChatClientThread extends Thread
 {
     private Socket           socket   = null;
@@ -56,7 +56,7 @@ public class AndroidChatClientThread extends Thread
             }
             catch(IOException ioe)
             {
-                System.out.println("Listening error: " + ioe.getMessage());
+                Log.i("Listening error: ",  ioe.getMessage());
                 client.stop();
                 break;
             }catch (ClassNotFoundException e) {

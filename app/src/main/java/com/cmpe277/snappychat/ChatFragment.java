@@ -9,7 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.ListView;
+import android.widget.ArrayAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,6 +23,7 @@ import android.view.ViewGroup;
 public class ChatFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String TAG = "ChatFragment";
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -30,6 +32,12 @@ public class ChatFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    String Loginemail;
+    ListView chatlistview;
+    ArrayAdapter adapter;
+    String[] mobileArray = {"Android","IPhone","WindowsMobile","Blackberry",
+            "WebOS","Ubuntu","Windows7","Max OS X"};
 
     public ChatFragment() {
         // Required empty public constructor
@@ -64,15 +72,20 @@ public class ChatFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Bundle bundle = this.getArguments();
+        Loginemail = bundle.getString("EmailID");
+        Log.i(TAG,Loginemail);
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_chat, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+    @Override
+    public void onViewCreated (View view,
+                               Bundle savedInstanceState) {
+
+        chatlistview = (ListView) view.findViewById(R.id.chatlistview);
+        adapter = new ArrayAdapter(getActivity(),R.layout.chatlistitems,R.id.chat_username, mobileArray);
+        chatlistview.setAdapter(adapter);
     }
 
     @Override

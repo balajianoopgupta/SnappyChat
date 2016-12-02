@@ -18,13 +18,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.os.Environment;
+import android.graphics.Bitmap;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
-
+import java.io.*;
 
 public class ProfileFragment extends Fragment {
     private static final String TAG = "ProfileFragment";
@@ -39,8 +41,6 @@ public class ProfileFragment extends Fragment {
     EditText email;
     EditText location;
 
-    String strnickname="";
-    View andview;
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -57,7 +57,7 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         Bundle bundle = this.getArguments();
         Loginemail = bundle.getString("EmailID");
-        Log.i("Bundle_Login",Loginemail);
+        Log.i(TAG,Loginemail);
 
 
 
@@ -102,7 +102,7 @@ public class ProfileFragment extends Fragment {
                 startActivityForResult(i, RESULT_LOAD_IMAGE);
             }
         });
-        andview=view;
+
         nickname = (EditText) view.findViewById(R.id.Nickname);
         email = (EditText) view.findViewById(R.id.Email);
         imageView = (ImageView) view.findViewById(R.id.imgView);
@@ -124,17 +124,65 @@ public class ProfileFragment extends Fragment {
                             //ChatMessage chmessage = new ChatMessage();
                             final ChatMessage chmessage = chatClient.returnmessage;
                             checkresponse = true;
-
                             if (!chmessage.message.equals("FAILURE")) {
                                 //update profile
+                                ///storage/sdcard/DCIM/Camera/IMG_20161128_085625.jpg
                                 Log.i("Nname", chmessage.nickname);
-                                // nickname.setText(chmessage.nickname);
-                                //email.setText(chmessage.email);
+                               try {
+                                    String root = Environment.getExternalStorageDirectory().toString();
+                                    root=root+"/saved_images";
+                                   //myDir=new File("/mnt/sdcard/saved_images");
+                                    File myDir = new File(root);
+
+                                    if (!myDir.exists()) {
+                                        Log.i("Directory", "does not exists");
+                                        myDir.mkdir();
+                                    }
+                                    else{
+                                        Log.i("Directory", "exists");
+                                    }
+                                    Log.i("Root", root);
+                                   // String filename=root+"/"+chmessage.email.split("@")[0]+".png";
+                                    String filename="/"+chmessage.email.split("@")[0]+".jpeg";
+
+                                    File file = new File (myDir, filename);
+                                    if (file.exists ()) {
+                                        file.delete();
+                                        Log.i("file", "exists");
+                                    }
+                                   else{
+                                        Log.i("file", "does not exists");
+                                    }
+                                    Log.i("Root", filename);
+                                    FileOutputStream fos = new FileOutputStream(file);
+                                    BufferedOutputStream bos = new BufferedOutputStream(fos);
+
+                                    bos.write(chmessage.pic);
+                                    bos.flush();
+                                    bos.close();
+                                    fos.flush();
+                                    fos.close();
+
+                                } catch(Exception e){
+                                    // some action
+                                }
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
                                         // This code will always run on the UI thread, therefore is safe to modify UI elements.
-                                        UpdateProfileUI(chmessage.nickname,chmessage.email);
+                                        //UpdateProfileUI(chmessage.nickname,chmessage.email);
+                                        nickname.setText(chmessage.nickname);
+                                        email.setText(chmessage.email);
+                                       /* String root = Environment.getExternalStorageDirectory().toString();
+                                        root=root+"/snappychatpics/";
+                                        String filename=chmessage.email.split("@")[0];
+                                        imageView.setImageBitmap(BitmapFactory.decodeFile(root+"/"+filename+".png"));*/
+
+
+                                        ByteArrayInputStream inputStream = new ByteArrayInputStream(chmessage.pic);
+                                        Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                                        imageView.setImageBitmap(bitmap);
+
                                     }
                                 });
 
