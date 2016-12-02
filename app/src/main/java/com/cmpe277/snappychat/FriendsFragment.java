@@ -2,15 +2,23 @@ package com.cmpe277.snappychat;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +30,7 @@ public class FriendsFragment extends Fragment implements FriendsListAdapter.Item
     private RecyclerView mRecyclerView;
     private FriendsListAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-
+    List<ChatMessage> rowListItem;
 
     public FriendsFragment() {
         // Required empty public constructor
@@ -46,9 +54,6 @@ public class FriendsFragment extends Fragment implements FriendsListAdapter.Item
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-
-
-
         return inflater.inflate(R.layout.fragment_friends, container, false);
     }
 
@@ -59,16 +64,57 @@ public class FriendsFragment extends Fragment implements FriendsListAdapter.Item
 
         // use this setting to improve performance if you know that changes in content do not change the layout size of the RecyclerView
         mRecyclerView.setHasFixedSize(true);
-      /*  List<ChatMessage> rowListItem = getAllItemList();
 
-        // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
-        mRecyclerView.setLayoutManager(mLayoutManager);
 
-        // specify an adapter (see also next example)
-        mAdapter =new FriendsListAdapter(getActivity().getApplicationContext(),rowListItem);
-        mRecyclerView.setAdapter(mAdapter);
-        mAdapter.setClickListener(this);*/
+
+        new Thread(new Runnable() {
+            public void run() {
+                AndroidChatClient chatClient=AndroidChatClient.getInstance();
+                chatClient.sendChatMessage=new ChatMessage();
+                chatClient.sendChatMessage.command="GET_FRIENDLIST";
+                Log.i("send","Setting to true");
+                chatClient.send=true;
+                boolean checkresponse=false;
+                while(!checkresponse){
+                    // Log.i("herer","response");
+                    if(chatClient.returnmessage!=null && chatClient.returnmessage.command!=null) {
+                        if (chatClient.returnmessage.command.equals("RESPONSE_GET_FRIENDLIST")) {
+                            //ChatMessage chmessage = new ChatMessage();
+                            final ChatMessage chmessage = chatClient.returnmessage;
+                            checkresponse = true;
+                            if (!chmessage.message.equals("FAILURE")) {
+                                //update profile
+                                ///storage/sdcard/DCIM/Camera/IMG_20161128_085625.jpg
+
+                                rowListItem=chatClient.returnlistmsg;
+
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+
+                                        //List<ChatMessage> rowListItem = getAllItemList();
+
+                                        // use a linear layout manager
+                                        mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+                                        mRecyclerView.setLayoutManager(mLayoutManager);
+
+                                        // specify an adapter (see also next example)
+                                        mAdapter =new FriendsListAdapter(getActivity().getApplicationContext(),rowListItem);
+                                        mRecyclerView.setAdapter(mAdapter);
+                                       // mAdapter.setClickListener(new OnIte);
+
+                                    }
+                                });
+
+
+                            }
+                        }
+                    }
+
+                }
+            }
+        }).start();
+
 
     }
 //    // TODO: Rename method, update argument and hook method into UI event
@@ -101,16 +147,6 @@ public class FriendsFragment extends Fragment implements FriendsListAdapter.Item
 
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
