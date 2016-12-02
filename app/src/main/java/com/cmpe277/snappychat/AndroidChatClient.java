@@ -88,6 +88,7 @@ public class AndroidChatClient implements Runnable {
     }
     public void handle(ChatMessage chmsg) {
         Log.i("Res","response recvd");
+        returnmessage = new ChatMessage();
         if (chmsg!=null && chmsg.command.equals("RESPONSE_LOGOUT"))
         {
 
@@ -104,8 +105,11 @@ public class AndroidChatClient implements Runnable {
     public void handleList(Stack<ChatMessage> chmsg)
     {
        // send=true;
+        returnmessage = new ChatMessage();
+        returnlistmsg = new Stack<ChatMessage>();
         returnmessage=chmsg.pop();
         returnlistmsg=chmsg;
+
         System.out.println("Command:"+returnmessage.command);
         System.out.println("Message:"+returnmessage.message);
 

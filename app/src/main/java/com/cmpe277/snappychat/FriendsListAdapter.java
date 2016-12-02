@@ -23,13 +23,14 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.
     private Context context;
     private ItemClickListener clickListener;
     public class ViewHolder extends RecyclerView.ViewHolder{
-        TextView userName,userEmail;
+        TextView userName,userEmail,userStatus;
         ImageView userImage;
         public ViewHolder(View friendlistlayout) {
             super(friendlistlayout);
             userName = (TextView) itemView.findViewById(R.id.userNickName);
             userEmail = (TextView) itemView.findViewById(R.id.userEmail);
             userImage = (ImageView)itemView.findViewById(R.id.userImage);
+            userStatus = (TextView) itemView.findViewById(R.id.userStatus);
         }
     }
     public FriendsListAdapter(Context context, List<ChatMessage> itemList) {
@@ -59,6 +60,9 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.
         });
 
         holder.userImage.setTag(holder);
+
+        //Display User Status
+        holder.userStatus.setText(itemList.get(position).message);
     }
     public void setClickListener(ItemClickListener itemClickListener) {
         this.clickListener = itemClickListener;
