@@ -6,6 +6,8 @@ package com.cmpe277.snappychat;
 import java.net.*;
 import java.util.Scanner;
 import java.io.*;
+import java.util.Stack;
+
 import android.util.Log;
 
 public class AndroidChatClient implements Runnable {
@@ -18,6 +20,7 @@ public class AndroidChatClient implements Runnable {
     //private DataOutputStream streamOut = null;
     private AndroidChatClientThread client    = null;
     public ChatMessage returnmessage=new ChatMessage();
+    public Stack<ChatMessage> returnlistmsg=new Stack<ChatMessage>();
     public String Loginemail="";
     public boolean send=false;
     public ChatMessage sendChatMessage=new ChatMessage();
@@ -97,6 +100,19 @@ public class AndroidChatClient implements Runnable {
 
         }
 
+    }
+    public void handleList(Stack<ChatMessage> chmsg)
+    {
+       // send=true;
+        System.out.println("Command:"+returnlistmsg.peek().command);
+        System.out.println("Message:"+returnlistmsg.peek().message);
+        returnmessage=returnlistmsg.pop();
+        returnlistmsg=chmsg;
+       /* while(!returnlistmsg.isEmpty()){
+            ChatMessage retmsg=returnlistmsg.pop();
+            System.out.println("Email:"+retmsg.email);
+            System.out.println("Message:"+retmsg.message);
+        }*/
     }
     public void start() throws IOException
     {

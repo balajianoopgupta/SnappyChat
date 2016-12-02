@@ -6,6 +6,8 @@ package com.cmpe277.snappychat;
 
 import java.net.*;
 import java.io.*;
+import java.util.Stack;
+
 import android.util.Log;
 public class AndroidChatClientThread extends Thread
 {
@@ -52,7 +54,12 @@ public class AndroidChatClientThread extends Thread
             try
             {
                 Object obj=streamIn.readObject();
-                client.handle((ChatMessage)obj);
+                if(obj instanceof ChatMessage){
+                    client.handle((ChatMessage)obj);
+                }
+                else if(obj instanceof Stack<?>){
+                    client.handleList((Stack<ChatMessage>)obj);
+                }
             }
             catch(IOException ioe)
             {
