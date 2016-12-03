@@ -20,7 +20,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Stack;
 
 public class ChatActivity extends AppCompatActivity {
@@ -85,16 +87,56 @@ public class ChatActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(messageText)) {
                     return;
                 }
+                Queue<String> que=new LinkedList<String>();
+                que.offer(messageText);
+                String msgtext=que.peek();
+                while(!que.isEmpty()) {
+                    final String text=que.poll();
+                    Thread	thread=new Thread(new Runnable() {
+                        public void run() {
+                            AndroidChatClient chatClient=AndroidChatClient.getInstance();
+                            chatClient.sendChatMessage=new ChatMessage();
+                            chatClient.sendChatMessage.command="SEND_MESSAGE";
+                            chatClient.sendChatMessage.message=text;
+                            chatClient.sendChatMessage.email=toEmail;
+                            chatClient.send=true;
+                            boolean checkresponse=false;
+                            while(!checkresponse){
+                                if(chatClient.returnmessage!=null && chatClient.returnmessage.command!=null) {
+                                    if (chatClient.returnmessage.command.equals("RESPONSE_SEND_MESSAGE")) {
 
+                                        ChatMessage chmessage = chatClient.returnmessage;
+                                        if (!chmessage.message.equals("FAILURE")) {
+                                            checkresponse = true;
+                                        }
+                                        else{
+                                            chatClient.sendChatMessage=new ChatMessage();
+                                            chatClient.sendChatMessage.command="SEND_MESSAGE";
+                                            chatClient.sendChatMessage.message=text;
+                                            chatClient.sendChatMessage.email=toEmail;
+                                            chatClient.send=true;
+                                        }
+                                    }
+                                }
+
+                            }
+                        }
+                    });
+
+                    thread.start();
+
+
+                }
                 SimpleChatMessage chatMessage = new SimpleChatMessage();
                 chatMessage.setId(122);//dummy
-                chatMessage.setMessage(messageText);
+                chatMessage.setMessage(msgtext);
                 chatMessage.setDate(DateFormat.getDateTimeInstance().format(new Date()));
                 chatMessage.setMe(true);
-
                 messageET.setText("");
-
                 displayMessage(chatMessage);
+
+
+
             }
         });
     }
