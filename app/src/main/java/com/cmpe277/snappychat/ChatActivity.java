@@ -29,6 +29,7 @@ public class ChatActivity extends AppCompatActivity {
     String toEmail;
     String fromemail;
     String nickname;
+    int count=200;
     volatile boolean stop = false;
     private EditText messageET;
     private ListView messagesContainer;
@@ -182,11 +183,11 @@ public class ChatActivity extends AppCompatActivity {
                                 ///storage/sdcard/DCIM/Camera/IMG_20161128_085625.jpg
                                 ArrayList<ChatMessage> retmsg=chatClient.onlinemessage;
 
-                                int count=1;
+
                                 IDs="";
                                 for(int i=1;i<retmsg.size();i++){
                                     SimpleChatMessage msg = new SimpleChatMessage();
-                                    msg.setId(retmsg.get(i).ID);
+                                    msg.setId(count);
                                     IDs=IDs+retmsg.get(i).ID+",";
                                     msg.setMe(false);
                                     msg.setMessage(retmsg.get(i).message);
@@ -194,19 +195,28 @@ public class ChatActivity extends AppCompatActivity {
                                     msg.setDate(sdf.format(retmsg.get(i).senddatetime));
                                     chatHistory.add(msg);
                                     Log.i("EMPTY","NOT EMPTY");
+                                    count++;
 
                                 }
 
                                 Log.i("COUNT",String.valueOf(count));
+                                ChatActivity.this.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+
+                                        adapter = new SimpleMessageAdapter(ChatActivity.this, new ArrayList<SimpleChatMessage>());
+                                        messagesContainer.setAdapter(adapter);
+                                        for(int i=0; i<chatHistory.size(); i++) {
+                                            SimpleChatMessage message = chatHistory.get(i);
+                                            displayMessage(message);
+                                        }
+
+                                    }
+                                });
 
 
-                                adapter = new SimpleMessageAdapter(ChatActivity.this, new ArrayList<SimpleChatMessage>());
-                                messagesContainer.setAdapter(adapter);
 
-                                for(int i=0; i<chatHistory.size(); i++) {
-                                    SimpleChatMessage message = chatHistory.get(i);
-                                    displayMessage(message);
-                                }
+
 
                                 chatClient.sendUserMessage=new ChatMessage();
                                 chatClient.sendUserMessage.command="UPDATE_HISTORY";
@@ -218,7 +228,7 @@ public class ChatActivity extends AppCompatActivity {
                             else{
 
                                     try {
-                                        Thread.sleep(5000);
+                                        Thread.sleep(10000);
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }
@@ -234,7 +244,7 @@ public class ChatActivity extends AppCompatActivity {
                             IDs="";
 
                             try {
-                                Thread.sleep(5000);
+                                Thread.sleep(10000);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
