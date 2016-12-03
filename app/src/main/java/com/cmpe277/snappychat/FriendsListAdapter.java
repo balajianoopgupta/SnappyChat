@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,16 +18,24 @@ import java.util.List;
  * Created by balaji.byrandurga on 12/1/16.
  */
 
-public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.ViewHolder> {
+public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.ViewHolder> implements View.OnClickListener {
 
     private List<ChatMessage> itemList;
     private Context context;
     private ItemClickListener clickListener;
+
+    @Override
+    public void onClick(View view) {
+        TextView userEmail = (TextView) view.findViewById(R.id.userEmail);
+        Log.i("EMAIL ON CLICK",userEmail.getText().toString());
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder{
         TextView userName,userEmail,userStatus;
         ImageView userImage;
         public ViewHolder(View friendlistlayout) {
             super(friendlistlayout);
+            friendlistlayout.setOnClickListener(FriendsListAdapter.this);
             userName = (TextView) itemView.findViewById(R.id.userNickName);
             userEmail = (TextView) itemView.findViewById(R.id.userEmail);
             userImage = (ImageView)itemView.findViewById(R.id.userImage);
@@ -40,6 +49,7 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.
     @Override
     public FriendsListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.friendlistlayout, parent, false);
+
         // set the view's size, margins, paddings and layout parameters
         ViewHolder vh = new ViewHolder(v);
         return vh;
@@ -71,6 +81,7 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.
     public int getItemCount() {
         return this.itemList.size();
     }
+
     public interface ItemClickListener {
         public void itemClick(View view, int position);
     }

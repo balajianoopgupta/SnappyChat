@@ -24,14 +24,14 @@ import java.util.List;
 
 
 public class FriendsFragment extends Fragment implements FriendsListAdapter.ItemClickListener {
-
+    private static final String TAG = "ProfileFragment";
     private OnFragmentInteractionListener mListener;
     private List<ChatMessage> friendList = new ArrayList<>();
     private RecyclerView mRecyclerView;
     private FriendsListAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     List<ChatMessage> rowListItem;
-
+    String Loginemail;
     public FriendsFragment() {
         // Required empty public constructor
     }
@@ -53,7 +53,9 @@ public class FriendsFragment extends Fragment implements FriendsListAdapter.Item
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
+        Bundle bundle = this.getArguments();
+        Loginemail = bundle.getString("EmailID");
+        Log.i(TAG,Loginemail);
         return inflater.inflate(R.layout.fragment_friends, container, false);
     }
 
@@ -101,7 +103,7 @@ public class FriendsFragment extends Fragment implements FriendsListAdapter.Item
                                         // specify an adapter (see also next example)
                                         mAdapter =new FriendsListAdapter(getActivity().getApplicationContext(),rowListItem);
                                         mRecyclerView.setAdapter(mAdapter);
-                                       // mAdapter.setClickListener(new OnIte);
+
 
                                     }
                                 });

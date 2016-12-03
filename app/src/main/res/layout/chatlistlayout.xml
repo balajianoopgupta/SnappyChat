@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="wrap_content">
+<de.hdodenhof.circleimageview.CircleImageView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/chatuserImage"
+    android:layout_width="70dp"
+    android:layout_height="70dp"
+    android:src="@drawable/image"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentLeft="true"
+    android:layout_marginLeft="10dp"
+    app:civ_border_width="2dp"
+    app:civ_border_color="#FF000000"/>
+    <TextView
+        android:id="@+id/chatuserNickName"
+        android:layout_alignParentTop="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_toRightOf="@+id/chatuserImage"
+        android:text="Nick Name"
+        android:textColor="@android:color/holo_purple"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textSize="16sp" />
+    <TextView
+        android:id="@+id/chatusermessageType"
+        android:layout_alignParentTop="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_toRightOf="@+id/chatuserNickName"
+        android:textColor="@android:color/holo_green_dark"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textSize="16sp" />
+    <TextView
+        android:id="@+id/chatuserEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chatuserNickName"
+        android:layout_marginLeft="16dp"
+        android:layout_toRightOf="@+id/chatuserImage"
+        android:ellipsize="end"
+        android:text="User Email"
+        android:textColor="@android:color/white"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/chatuserMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chatuserEmail"
+        android:layout_marginLeft="16dp"
+        android:layout_toRightOf="@+id/chatuserImage"
+        android:ellipsize="end"
+        android:text="User Status"
+        android:textColor="@android:color/holo_green_dark"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textSize="14sp" />
+</RelativeLayout>

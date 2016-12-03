@@ -19,6 +19,8 @@ public class ChatMessage implements Serializable {
     public String profession;
     public String aboutme;
     public String interests;
+    public java.sql.Timestamp senddatetime;
+    public int ID;
 
 }
 

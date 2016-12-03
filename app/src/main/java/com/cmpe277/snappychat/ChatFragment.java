@@ -5,12 +5,16 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.ArrayAdapter;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,10 +38,13 @@ public class ChatFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     String Loginemail;
-    ListView chatlistview;
-    ArrayAdapter adapter;
-    String[] mobileArray = {"Android","IPhone","WindowsMobile","Blackberry",
-            "WebOS","Ubuntu","Windows7","Max OS X"};
+
+
+
+    private RecyclerView mRecyclerView;
+    private ChatListAdapter  mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    List<ChatMessage> rowListItem;
 
     public ChatFragment() {
         // Required empty public constructor
@@ -82,10 +89,60 @@ public class ChatFragment extends Fragment {
     @Override
     public void onViewCreated (View view,
                                Bundle savedInstanceState) {
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.chatList);
 
-        chatlistview = (ListView) view.findViewById(R.id.chatlistview);
-        adapter = new ArrayAdapter(getActivity(),R.layout.chatlistitems,R.id.chat_username, mobileArray);
-        chatlistview.setAdapter(adapter);
+        // use this setting to improve performance if you know that changes in content do not change the layout size of the RecyclerView
+        mRecyclerView.setHasFixedSize(true);
+        new Thread(new Runnable() {
+            public void run() {
+                AndroidChatClient chatClient=AndroidChatClient.getInstance();
+                chatClient.sendChatMessage=new ChatMessage();
+                chatClient.sendChatMessage.command="GET_CHATLIST";
+                Log.i("send","Setting to true");
+                chatClient.send=true;
+                boolean checkresponse=false;
+                while(!checkresponse){
+                    // Log.i("herer","response");
+                    if(chatClient.returnmessage!=null && chatClient.returnmessage.command!=null) {
+                        if (chatClient.returnmessage.command.equals("RESPONSE_GET_CHATLIST")) {
+                            //ChatMessage chmessage = new ChatMessage();
+                            final ChatMessage chmessage = chatClient.returnmessage;
+                            checkresponse = true;
+                            Log.i("CHATLIST",chmessage.message);
+                            if (!chmessage.message.equals("FAILURE")) {
+                                //update profile
+                                ///storage/sdcard/DCIM/Camera/IMG_20161128_085625.jpg
+
+                                rowListItem=chatClient.returnlistmsg;
+
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+
+                                        //List<ChatMessage> rowListItem = getAllItemList();
+
+                                        // use a linear layout manager
+                                        mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+                                        mRecyclerView.setLayoutManager(mLayoutManager);
+
+                                        // specify an adapter (see also next example)
+                                        mAdapter =new ChatListAdapter(getActivity().getApplicationContext(),rowListItem);
+                                        mRecyclerView.setAdapter(mAdapter);
+                                        // mAdapter.setClickListener(new OnIte);
+
+                                    }
+                                });
+
+
+                            }
+                        }
+                    }
+
+                }
+            }
+        }).start();
+
+
     }
 
     @Override

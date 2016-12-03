@@ -57,18 +57,18 @@ public class MainActivity extends AppCompatActivity {
         HomeFragment homefragment = new HomeFragment();
         homefragment.setArguments(fragmentbundle);
 
-        ChatFragment chatfragment=new ChatFragment();
-        chatfragment.setArguments(fragmentbundle);
-
         FriendsFragment friendsfragment=new FriendsFragment();
         friendsfragment.setArguments(fragmentbundle);
+
+        ChatFragment chatfragment=new ChatFragment();
+        chatfragment.setArguments(fragmentbundle);
 
         ProfileFragment profilefragment=new ProfileFragment();
         profilefragment.setArguments(fragmentbundle);
 
         adapter.addFragment(homefragment, "Home");
-        adapter.addFragment(chatfragment, "Chat");
         adapter.addFragment(friendsfragment, "Friends");
+        adapter.addFragment(chatfragment, "Chat");
         adapter.addFragment(profilefragment, "Profile");
         viewPager.setAdapter(adapter);
     }
@@ -102,6 +102,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        AndroidChatClient.getInstance().destroyHandler();
 
+
+    }
 
 }
