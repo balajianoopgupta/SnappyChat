@@ -112,7 +112,7 @@ public class AndroidChatClient implements Runnable {
             chatClient.sendChatMessage.command = "GET_OFFLINE_MSG";
             // Log.i("send", "Setting to true");
             chatClient.send = true;*/
-           calltimer();
+           //calltimer();
 
 
 
@@ -324,6 +324,7 @@ public class AndroidChatClient implements Runnable {
         }
         Log.i("Command:",response_historymessage.command);
         Log.i("Message:",response_historymessage.message);
+        Log.i("SIZE:",String.valueOf(historymsglist.size()));
     }
     public void handle_OfflineMessage(ArrayList<String> chmsg){
         offlinemsglist = new ArrayList<String>();

@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -65,9 +67,20 @@ public class ChatActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem menuItem)
     {
         onBackPressed();
+        switch(menuItem.getItemId()) {
+            case R.id.file_attach:
+                Log.i("Clicked","Clicked attach");
+                break;
+        }
         return true;
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.file_attach, menu); //inflate our menu
+        return true;
+    }
 
     private void initControls() {
         messagesContainer = (ListView) findViewById(R.id.messagesContainer);
@@ -166,6 +179,7 @@ public class ChatActivity extends AppCompatActivity {
                 chatClient.request_historymessage=new ChatMessage();
                 chatClient.request_historymessage.command="GET_HISTORY";
                 chatClient.request_historymessage.email=toEmail;
+
                 Log.i("send","Setting to true");
                 chatClient.sendhistory=true;
                 String IDs="";
@@ -181,9 +195,11 @@ public class ChatActivity extends AppCompatActivity {
                             if (!chmessage.message.equals("FAILURE")) {
                                 //update profile
                                 ///storage/sdcard/DCIM/Camera/IMG_20161128_085625.jpg
-                                ArrayList<ChatMessage> retmsg=chatClient.historymsglist;
 
-
+                                ArrayList<ChatMessage> retmsg=new ArrayList<ChatMessage>();
+                                retmsg=chatClient.historymsglist;
+                              //  Log.i("chatClient.historymsglist","NOT EMPTY");
+                                chatClient.historymsglist=new ArrayList<ChatMessage>();
                                 IDs="";
                                 for(int i=1;i<retmsg.size();i++){
                                     SimpleChatMessage msg = new SimpleChatMessage();
@@ -208,6 +224,7 @@ public class ChatActivity extends AppCompatActivity {
                                         messagesContainer.setAdapter(adapter);
                                         for(int i=0; i<chatHistory.size(); i++) {
                                             SimpleChatMessage message = chatHistory.get(i);
+                                            Log.i("check message",String.valueOf(i));
                                             displayMessage(message);
                                         }
 
@@ -217,12 +234,13 @@ public class ChatActivity extends AppCompatActivity {
 
 
 
-
-                                chatClient.request_historymessage=new ChatMessage();
-                                chatClient.request_historymessage.command="UPDATE_HISTORY";
-                                chatClient.request_historymessage.email=toEmail;
-                                chatClient.request_historymessage.message=IDs;
-                                chatClient.sendhistory=true;
+                                if(!IDs.isEmpty()) {
+                                    chatClient.request_historymessage = new ChatMessage();
+                                    chatClient.request_historymessage.command = "UPDATE_HISTORY";
+                                    chatClient.request_historymessage.email = toEmail;
+                                    chatClient.request_historymessage.message = IDs;
+                                    chatClient.sendhistory = true;
+                                }
 
                             }
                             else{
@@ -231,6 +249,7 @@ public class ChatActivity extends AppCompatActivity {
                                         Thread.sleep(10000);
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
+                                        Log.i("EXCEPTION",e.toString());
                                     }
                                     chatClient.request_historymessage = new ChatMessage();
                                     chatClient.request_historymessage.command = "GET_HISTORY";

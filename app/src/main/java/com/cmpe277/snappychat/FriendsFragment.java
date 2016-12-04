@@ -97,14 +97,13 @@ public class FriendsFragment extends Fragment implements FriendsListAdapter.Item
                                         //List<ChatMessage> rowListItem = getAllItemList();
 
                                         // use a linear layout manager
-                                        mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
-                                        mRecyclerView.setLayoutManager(mLayoutManager);
+
 
                                         // specify an adapter (see also next example)
                                         mAdapter =new FriendsListAdapter(getActivity().getApplicationContext(),rowListItem);
+                                        mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
                                         mRecyclerView.setAdapter(mAdapter);
-
-
+                                        mRecyclerView.setLayoutManager(mLayoutManager);
                                     }
                                 });
 
