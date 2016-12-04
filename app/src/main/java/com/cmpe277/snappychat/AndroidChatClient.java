@@ -21,6 +21,7 @@ public class AndroidChatClient implements Runnable {
     private Socket socket              = null;
     private Thread thread              = null;
     CountDownTimer timer;
+    int radiobuttonid;
     OutputStream outputStream = null;
     ObjectOutputStream dataOutputStream = null;
     private static AndroidChatClient ChatClient = null;

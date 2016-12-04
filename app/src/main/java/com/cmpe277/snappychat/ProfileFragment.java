@@ -24,6 +24,7 @@ import android.graphics.Bitmap;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -103,7 +104,7 @@ public class ProfileFragment extends Fragment {
             }
         });
         //update
-        notificationSetting.setChecked(true);
+        //notificationSetting.setChecked(true);
 
         aboutme.setEnabled(isEnabled);
         nickname.setEnabled(isEnabled);
@@ -136,6 +137,7 @@ public class ProfileFragment extends Fragment {
             public void onClick(View view) {
                 //save changes
                 isEnabled = false;
+                editMessage();
                 showHideProfile();
             }
         });
@@ -156,7 +158,7 @@ public class ProfileFragment extends Fragment {
 
         new Thread(new Runnable() {
             public void run() {
-                AndroidChatClient chatClient = AndroidChatClient.getInstance();
+                final AndroidChatClient chatClient = AndroidChatClient.getInstance();
                 chatClient.sendChatMessage = new ChatMessage();
                 chatClient.sendChatMessage.command = "GET_PROFILE";
                 Log.i("send", "Setting to true");
@@ -216,6 +218,29 @@ public class ProfileFragment extends Fragment {
                                         //UpdateProfileUI(chmessage.nickname,chmessage.email);
                                         nickname.setText(chmessage.nickname);
                                         email.setText(chmessage.email);
+                                        aboutme.setText(chmessage.aboutme);
+                                        location.setText(chmessage.location);
+                                        profession.setText(chmessage.profession);
+                                        interests.setText(chmessage.interests);
+                                        notificationSetting.setEnabled(chmessage.notifications);
+                                        switch (chmessage.visibility) {
+                                            case 0:
+                                                AndroidChatClient.getInstance().radiobuttonid=0;
+                                                rg.check(R.id.visibility_friends);
+                                                break;
+                                            case 1:
+                                                AndroidChatClient.getInstance().radiobuttonid=1;
+                                                rg.check(R.id.visibility_private);
+                                                break;
+                                            case 2:
+                                                AndroidChatClient.getInstance().radiobuttonid=2;
+                                                rg.check(R.id.visibility_public);
+                                                break;
+
+                                        }
+
+
+
                                        /* String root = Environment.getExternalStorageDirectory().toString();
                                         root=root+"/snappychatpics/";
                                         String filename=chmessage.email.split("@")[0];
@@ -247,16 +272,23 @@ public class ProfileFragment extends Fragment {
 
         switch (view.getId()) {
             case R.id.visibility_private:
-                if (checked)
+                if (checked) {
+                    AndroidChatClient.getInstance().radiobuttonid=1;
                     Log.d("checked :", String.valueOf(view.getId()));
+                }
                 break;
             case R.id.visibility_friends:
-                if (checked)
+                if (checked) {
+                    AndroidChatClient.getInstance().radiobuttonid=0;
                     Log.d("checked :", String.valueOf(view.getId()));
+
+                }
                 break;
             case R.id.visibility_public:
-                if (checked)
+                if (checked) {
+                    AndroidChatClient.getInstance().radiobuttonid=2;
                     Log.d("checked :", String.valueOf(view.getId()));
+                }
                 break;
 
         }
@@ -382,5 +414,56 @@ public class ProfileFragment extends Fragment {
             picture.setImageBitmap(BitmapFactory.decodeFile(picturePath));
 
         }
+    }
+
+    public void editMessage(){
+
+        new Thread(new Runnable() {
+            public void run() {
+                final AndroidChatClient chatClient = AndroidChatClient.getInstance();
+                chatClient.sendChatMessage = new ChatMessage();
+                chatClient.sendChatMessage.command = "EDIT_PROFILE";
+                chatClient.sendChatMessage.nickname=nickname.getText().toString();
+                chatClient.sendChatMessage.aboutme=aboutme.getText().toString();
+                chatClient.sendChatMessage.location=location.getText().toString();
+                chatClient.sendChatMessage.profession=profession.getText().toString();
+                chatClient.sendChatMessage.interests=interests.getText().toString();
+                chatClient.sendChatMessage.notifications=notificationSetting.isEnabled();
+                chatClient.sendChatMessage.visibility=AndroidChatClient.getInstance().radiobuttonid;
+                Bitmap bmp=picture.getDrawingCache();
+                ByteArrayOutputStream baos=new ByteArrayOutputStream();
+                bmp.compress(Bitmap.CompressFormat.PNG,100,baos);
+                chatClient.sendChatMessage.pic=baos.toByteArray();
+                Log.i("send", "Setting to true");
+                chatClient.send = true;
+                boolean checkresponse = false;
+                while (!checkresponse) {
+                    // Log.i("herer","response");
+                    if (chatClient.returnmessage != null && chatClient.returnmessage.command != null) {
+                        if (chatClient.returnmessage.command.equals("RESPONSE_EDIT_PROFILE")) {
+                            //ChatMessage chmessage = new ChatMessage();
+                            final ChatMessage chmessage = chatClient.returnmessage;
+                            checkresponse = true;
+                            if (!chmessage.message.equals("FAILURE")) {
+
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        // This code will always run on the UI thread, therefore is safe to modify UI elements.
+                                        //UpdateProfileUI(chmessage.nickname,chmessage.email);
+                                        Toast.makeText(getContext(), "Updated Profile",Toast.LENGTH_LONG).show();
+
+                                    }
+                                });
+
+
+                            }
+                        }
+                    }
+
+                }
+            }
+        }).start();
+
     }
 }
