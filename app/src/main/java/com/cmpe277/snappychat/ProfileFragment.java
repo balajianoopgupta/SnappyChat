@@ -431,7 +431,9 @@ public class ProfileFragment extends Fragment {
         send_chmsg.notifications=notificationSetting.isEnabled();
         send_chmsg.visibility=AndroidChatClient.getInstance().radiobuttonid;
         send_chmsg.email=AndroidChatClient.getInstance().Loginemail;
+
         Drawable drawable= ResourcesCompat.getDrawable(getResources(), R.drawable.image, null);
+
         Bitmap bitmap1=((BitmapDrawable)drawable).getBitmap();
         ByteArrayOutputStream bytearrayoutputstream=new ByteArrayOutputStream();;
 
