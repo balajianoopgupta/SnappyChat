@@ -96,26 +96,26 @@ public class ChatActivity extends AppCompatActivity {
                     Thread	thread=new Thread(new Runnable() {
                         public void run() {
                             AndroidChatClient chatClient=AndroidChatClient.getInstance();
-                            chatClient.sendChatMessage=new ChatMessage();
-                            chatClient.sendChatMessage.command="SEND_MESSAGE";
-                            chatClient.sendChatMessage.message=text;
-                            chatClient.sendChatMessage.email=toEmail;
-                            chatClient.send=true;
+                            chatClient.request_sendmessage=new ChatMessage();
+                            chatClient.request_sendmessage.command="SEND_MESSAGE";
+                            chatClient.request_sendmessage.message=text;
+                            chatClient.request_sendmessage.email=toEmail;
+                            chatClient.sendmessage=true;
                             boolean checkresponse=false;
                             while(!checkresponse){
-                                if(chatClient.returnmessage!=null && chatClient.returnmessage.command!=null) {
-                                    if (chatClient.returnmessage.command.equals("RESPONSE_SEND_MESSAGE")) {
+                                if(chatClient.response_sendmessage!=null && chatClient.response_sendmessage.command!=null) {
+                                    if (chatClient.response_sendmessage.command.equals("RESPONSE_SEND_MESSAGE")) {
 
-                                        ChatMessage chmessage = chatClient.returnmessage;
+                                        ChatMessage chmessage = chatClient.response_sendmessage;
                                         if (!chmessage.message.equals("FAILURE")) {
                                             checkresponse = true;
                                         }
                                         else{
-                                            chatClient.sendChatMessage=new ChatMessage();
-                                            chatClient.sendChatMessage.command="SEND_MESSAGE";
-                                            chatClient.sendChatMessage.message=text;
-                                            chatClient.sendChatMessage.email=toEmail;
-                                            chatClient.send=true;
+                                            chatClient.request_sendmessage=new ChatMessage();
+                                            chatClient.request_sendmessage.command="SEND_MESSAGE";
+                                            chatClient.request_sendmessage.message=text;
+                                            chatClient.request_sendmessage.email=toEmail;
+                                            chatClient.sendmessage=true;
                                         }
                                     }
                                 }
@@ -163,25 +163,25 @@ public class ChatActivity extends AppCompatActivity {
         thread=new Thread(new Runnable() {
             public void run() {
                 AndroidChatClient chatClient=AndroidChatClient.getInstance();
-                chatClient.sendUserMessage=new ChatMessage();
-                chatClient.sendUserMessage.command="GET_HISTORY";
-                chatClient.sendUserMessage.email=toEmail;
+                chatClient.request_historymessage=new ChatMessage();
+                chatClient.request_historymessage.command="GET_HISTORY";
+                chatClient.request_historymessage.email=toEmail;
                 Log.i("send","Setting to true");
-                chatClient.sendUser=true;
+                chatClient.sendhistory=true;
                 String IDs="";
                 while(!stop){
                     // Log.i("herer","response");
 
-                    if(chatClient.getUsermessage!=null && chatClient.getUsermessage.command!=null && chatClient.sendUser==false) {
-                        if (chatClient.getUsermessage.command.equals("RESPONSE_GET_HISTORY")) {
+                    if(chatClient.response_historymessage!=null && chatClient.response_historymessage.command!=null && chatClient.sendhistory==false) {
+                        if (chatClient.response_historymessage.command.equals("RESPONSE_GET_HISTORY")) {
                             //ChatMessage chmessage = new ChatMessage();
-                            final ChatMessage chmessage = chatClient.getUsermessage;
-                            chatClient.sendUser=true;
+                            final ChatMessage chmessage = chatClient.response_historymessage;
+                            chatClient.sendhistory=true;
                             Log.i("HISTORY",chmessage.message);
                             if (!chmessage.message.equals("FAILURE")) {
                                 //update profile
                                 ///storage/sdcard/DCIM/Camera/IMG_20161128_085625.jpg
-                                ArrayList<ChatMessage> retmsg=chatClient.onlinemessage;
+                                ArrayList<ChatMessage> retmsg=chatClient.historymsglist;
 
 
                                 IDs="";
@@ -218,11 +218,11 @@ public class ChatActivity extends AppCompatActivity {
 
 
 
-                                chatClient.sendUserMessage=new ChatMessage();
-                                chatClient.sendUserMessage.command="UPDATE_HISTORY";
-                                chatClient.sendUserMessage.email=toEmail;
-                                chatClient.sendUserMessage.message=IDs;
-                                chatClient.sendUser=true;
+                                chatClient.request_historymessage=new ChatMessage();
+                                chatClient.request_historymessage.command="UPDATE_HISTORY";
+                                chatClient.request_historymessage.email=toEmail;
+                                chatClient.request_historymessage.message=IDs;
+                                chatClient.sendhistory=true;
 
                             }
                             else{
@@ -232,15 +232,15 @@ public class ChatActivity extends AppCompatActivity {
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }
-                                    chatClient.sendUserMessage = new ChatMessage();
-                                    chatClient.sendUserMessage.command = "GET_HISTORY";
-                                    chatClient.sendUserMessage.email = toEmail;
+                                    chatClient.request_historymessage = new ChatMessage();
+                                    chatClient.request_historymessage.command = "GET_HISTORY";
+                                    chatClient.request_historymessage.email = toEmail;
                                     //chatClient.getUsermessage=new ChatMessage();
-                                    chatClient.sendUser = true;
+                                    chatClient.sendhistory = true;
 
                             }
                         }
-                        else if(chatClient.getUsermessage.command.equals("RESPONSE_UPDATE_HISTORY")  && chatClient.sendUser==false){
+                        else if(chatClient.response_historymessage.command.equals("RESPONSE_UPDATE_HISTORY")  && chatClient.sendhistory==false){
                             IDs="";
 
                             try {
@@ -248,11 +248,11 @@ public class ChatActivity extends AppCompatActivity {
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
-                            chatClient.sendUserMessage = new ChatMessage();
-                            chatClient.sendUserMessage.command = "GET_HISTORY";
-                            chatClient.sendUserMessage.email = toEmail;
+                            chatClient.request_historymessage = new ChatMessage();
+                            chatClient.request_historymessage.command = "GET_HISTORY";
+                            chatClient.request_historymessage.email = toEmail;
                             // chatClient.getUsermessage=new ChatMessage();
-                            chatClient.sendUser = true;
+                            chatClient.sendhistory = true;
 
 
                         }

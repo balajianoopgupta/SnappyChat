@@ -72,7 +72,10 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.
         holder.userImage.setTag(holder);
 
         //Display User Status
-        holder.userStatus.setText(itemList.get(position).message);
+        if(itemList.get(position).status==true)
+            holder.userStatus.setText("ONLINE");
+        else
+            holder.userStatus.setText("OFFLINE");
     }
     public void setClickListener(ItemClickListener itemClickListener) {
         this.clickListener = itemClickListener;

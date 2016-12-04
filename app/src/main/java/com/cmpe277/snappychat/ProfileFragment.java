@@ -162,17 +162,17 @@ public class ProfileFragment extends Fragment {
         new Thread(new Runnable() {
             public void run() {
                 final AndroidChatClient chatClient = AndroidChatClient.getInstance();
-                chatClient.sendChatMessage = new ChatMessage();
-                chatClient.sendChatMessage.command = "GET_PROFILE";
+                chatClient.request_profileMessageCheck = new ChatMessage();
+                chatClient.request_profileMessageCheck.command = "GET_PROFILE";
                 Log.i("send", "Setting to true");
-                chatClient.send = true;
+                chatClient.sendprofile = true;
                 boolean checkresponse = false;
                 while (!checkresponse) {
                     // Log.i("herer","response");
-                    if (chatClient.returnmessage != null && chatClient.returnmessage.command != null) {
-                        if (chatClient.returnmessage.command.equals("RESPONSE_GET_PROFILE")) {
+                    if (chatClient.response_profileMessageCheck != null && chatClient.response_profileMessageCheck.command != null) {
+                        if (chatClient.response_profileMessageCheck.command.equals("RESPONSE_GET_PROFILE")) {
                             //ChatMessage chmessage = new ChatMessage();
-                            final ChatMessage chmessage = chatClient.returnmessage;
+                            final ChatMessage chmessage = chatClient.response_profileMessageCheck;
                             checkresponse = true;
                             if (!chmessage.message.equals("FAILURE")) {
                                 //update profile
@@ -225,7 +225,8 @@ public class ProfileFragment extends Fragment {
                                         location.setText(chmessage.location);
                                         profession.setText(chmessage.profession);
                                         interests.setText(chmessage.interests);
-                                        notificationSetting.setEnabled(chmessage.notifications);
+                                        notificationSetting.setChecked(chmessage.notifications);
+                                        //notificationSetting.setEnabled(chmessage.notifications);
                                         switch (chmessage.visibility) {
                                             case 0:
                                                 AndroidChatClient.getInstance().radiobuttonid=0;
@@ -374,10 +375,10 @@ public class ProfileFragment extends Fragment {
                                 new Thread(new Runnable() {
                                     public void run() {
                                         AndroidChatClient chatClient = AndroidChatClient.getInstance();
-                                        chatClient.sendChatMessage = new ChatMessage();
-                                        chatClient.sendChatMessage.command = "LOGOUT";
+                                        chatClient.request_logoutMessageCheck = new ChatMessage();
+                                        chatClient.request_logoutMessageCheck.command = "LOGOUT";
                                         Log.i("send", "Setting to true");
-                                        chatClient.send = true;
+                                        chatClient.sendlogout = true;
 
                                     }
                                 }).start();
@@ -445,17 +446,17 @@ public class ProfileFragment extends Fragment {
         new Thread(new Runnable() {
             public void run() {
                 final AndroidChatClient chatClient = AndroidChatClient.getInstance();
-                chatClient.sendChatMessage = new ChatMessage();
-                chatClient.sendChatMessage=send_chmsg;
+                chatClient.request_profileMessageCheck = new ChatMessage();
+                chatClient.request_profileMessageCheck=send_chmsg;
                 Log.i("send", "Setting to true");
-                chatClient.send = true;
+                chatClient.sendprofile = true;
                 boolean checkresponse = false;
                 while (!checkresponse) {
                     // Log.i("herer","response");
-                    if (chatClient.returnmessage != null && chatClient.returnmessage.command != null) {
-                        if (chatClient.returnmessage.command.equals("RESPONSE_EDIT_PROFILE")) {
+                    if (chatClient.response_profileMessageCheck != null && chatClient.response_profileMessageCheck.command != null) {
+                        if (chatClient.response_profileMessageCheck.command.equals("RESPONSE_EDIT_PROFILE")) {
                             //ChatMessage chmessage = new ChatMessage();
-                            final ChatMessage chmessage = chatClient.returnmessage;
+                            final ChatMessage chmessage = chatClient.response_profileMessageCheck;
                             checkresponse = true;
                             if (!chmessage.message.equals("FAILURE")) {
 

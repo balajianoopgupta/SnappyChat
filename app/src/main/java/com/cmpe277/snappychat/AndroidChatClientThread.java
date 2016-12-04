@@ -59,16 +59,30 @@ public class AndroidChatClientThread extends Thread
                     client.handle((ChatMessage)obj);
                 }
                 else if(obj instanceof Stack<?>){
-                    client.handleList((Stack<ChatMessage>)obj);
+                    Stack<ChatMessage> stckmessage=new Stack<ChatMessage>();
+                    stckmessage=(Stack<ChatMessage>) obj;
+                    if(!stckmessage.isEmpty()) {
+                        if (stckmessage.peek().command == "RESPONSE_GET_CHATLIST") {
+                            client.handle_ChatList((Stack<ChatMessage>) obj);
+                        } else if (stckmessage.peek().command == "RESPONSE_GET_FRIENDLIST") {
+                            client.handle_FriendList((Stack<ChatMessage>) obj);
+                        }
+                    }
+                    else{
+                        ChatMessage chms=new ChatMessage();
+                        chms.command="RESPONSE_LOGOUT";
+                        client.handle(chms);
+                    }
+                    //client.handleList((Stack<ChatMessage>)obj);
                 }
                 else if(obj instanceof ArrayList<?>){
 
                     if(((ArrayList<?>)obj).get(0) instanceof ChatMessage)
                     {
-                        client.handleUserList((ArrayList<ChatMessage>) obj);
+                        client.handle_History((ArrayList<ChatMessage>) obj);
                     }
                     else {
-                        client.handleArrayList((ArrayList<String>) obj);
+                        client.handle_OfflineMessage((ArrayList<String>) obj);
                     }
                 }
             }

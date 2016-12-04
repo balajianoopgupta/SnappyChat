@@ -95,6 +95,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ViewHo
         holder.userImage.setTag(holder);
 
         //Display User Status
+
         holder.userMessage.setText(itemList.get(position).message);
 
         if(chatClient.offlinemsglist.contains(email)){

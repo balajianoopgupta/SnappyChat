@@ -72,23 +72,23 @@ public class FriendsFragment extends Fragment implements FriendsListAdapter.Item
         new Thread(new Runnable() {
             public void run() {
                 AndroidChatClient chatClient=AndroidChatClient.getInstance();
-                chatClient.sendChatMessage=new ChatMessage();
-                chatClient.sendChatMessage.command="GET_FRIENDLIST";
+                chatClient.request_friendsMessageCheck=new ChatMessage();
+                chatClient.request_friendsMessageCheck.command="GET_FRIENDLIST";
                 Log.i("send","Setting to true");
-                chatClient.send=true;
+                chatClient.sendfriends=true;
                 boolean checkresponse=false;
                 while(!checkresponse){
                     // Log.i("herer","response");
-                    if(chatClient.returnmessage!=null && chatClient.returnmessage.command!=null) {
-                        if (chatClient.returnmessage.command.equals("RESPONSE_GET_FRIENDLIST")) {
+                    if(chatClient.response_friendsMessageCheck!=null && chatClient.response_friendsMessageCheck.command!=null) {
+                        if (chatClient.response_friendsMessageCheck.command.equals("RESPONSE_GET_FRIENDLIST")) {
                             //ChatMessage chmessage = new ChatMessage();
-                            final ChatMessage chmessage = chatClient.returnmessage;
+                            final ChatMessage chmessage = chatClient.response_friendsMessageCheck;
                             checkresponse = true;
                             if (!chmessage.message.equals("FAILURE")) {
                                 //update profile
                                 ///storage/sdcard/DCIM/Camera/IMG_20161128_085625.jpg
 
-                                rowListItem=chatClient.returnlistmsg;
+                                rowListItem=chatClient.friendsmsglist;
 
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override

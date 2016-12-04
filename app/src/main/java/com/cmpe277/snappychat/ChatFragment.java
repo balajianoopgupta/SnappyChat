@@ -96,24 +96,24 @@ public class ChatFragment extends Fragment {
         new Thread(new Runnable() {
             public void run() {
                 AndroidChatClient chatClient=AndroidChatClient.getInstance();
-                chatClient.sendChatMessage=new ChatMessage();
-                chatClient.sendChatMessage.command="GET_CHATLIST";
+                chatClient.request_chatMessageCheck=new ChatMessage();
+                chatClient.request_chatMessageCheck.command="GET_CHATLIST";
                 Log.i("send","Setting to true");
-                chatClient.send=true;
+                chatClient.sendchats=true;
                 boolean checkresponse=false;
                 while(!checkresponse){
                     // Log.i("herer","response");
-                    if(chatClient.returnmessage!=null && chatClient.returnmessage.command!=null) {
-                        if (chatClient.returnmessage.command.equals("RESPONSE_GET_CHATLIST")) {
+                    if(chatClient.response_chatMessageCheck!=null && chatClient.response_chatMessageCheck.command!=null) {
+                        if (chatClient.response_chatMessageCheck.command.equals("RESPONSE_GET_CHATLIST")) {
                             //ChatMessage chmessage = new ChatMessage();
-                            final ChatMessage chmessage = chatClient.returnmessage;
+                            final ChatMessage chmessage = chatClient.response_chatMessageCheck;
                             checkresponse = true;
                             Log.i("CHATLIST",chmessage.message);
                             if (!chmessage.message.equals("FAILURE")) {
                                 //update profile
                                 ///storage/sdcard/DCIM/Camera/IMG_20161128_085625.jpg
 
-                                rowListItem=chatClient.returnlistmsg;
+                                rowListItem=chatClient.chatmsglist;
 
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override

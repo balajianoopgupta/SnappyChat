@@ -28,26 +28,61 @@ public class AndroidChatClient implements Runnable {
     private boolean runHandler = true;
     //private DataOutputStream streamOut = null;
     private AndroidChatClientThread client    = null;
-    public ChatMessage returnmessage=new ChatMessage();
-    public ChatMessage sendChatMessage=new ChatMessage();
+ //   public ChatMessage returnmessage=new ChatMessage();
+  //  public ChatMessage sendChatMessage=new ChatMessage();
 
-    public ChatMessage getUsermessage=new ChatMessage();
-    public ChatMessage sendUserMessage=new ChatMessage();
+   // public ChatMessage getUsermessage=new ChatMessage();
+   // public ChatMessage sendUserMessage=new ChatMessage();
 
-    public ChatMessage newMessageCheck=new ChatMessage();
-    public ChatMessage res_newMessageCheck=new ChatMessage();
-
-    public ArrayList<ChatMessage> onlinemessage=new ArrayList<ChatMessage>();
-
-
-    public Stack<ChatMessage> returnlistmsg=new Stack<ChatMessage>();
-    public String Loginemail="";
-
-    public boolean send=false;
-    public boolean sendUser=false;
+    //Offline Message
+    public ChatMessage request_offlineMessageCheck=new ChatMessage();
+    public ChatMessage response_offlineMessageCheck=new ChatMessage();
+    public ArrayList<String> offlinemsglist=new ArrayList<String>();
     public boolean sendofflinecheck=false;
 
-    public ArrayList<String> offlinemsglist=new ArrayList<String>();
+    //ChatList Message
+    public ChatMessage request_chatMessageCheck=new ChatMessage();
+    public ChatMessage response_chatMessageCheck=new ChatMessage();
+    public Stack<ChatMessage> chatmsglist=new Stack<ChatMessage>();
+    public boolean sendchats=false;
+
+    //FriendList Message
+    public ChatMessage request_friendsMessageCheck=new ChatMessage();
+    public ChatMessage response_friendsMessageCheck=new ChatMessage();
+    public Stack<ChatMessage> friendsmsglist=new Stack<ChatMessage>();
+    public boolean sendfriends=false;
+
+    //Profile Message
+    public ChatMessage request_profileMessageCheck=new ChatMessage();
+    public ChatMessage response_profileMessageCheck=new ChatMessage();
+    public boolean sendprofile=false;
+
+    //Logout Message
+    public ChatMessage request_logoutMessageCheck=new ChatMessage();
+    public ChatMessage response_logoutMessageCheck=new ChatMessage();
+    public boolean sendlogout=false;
+
+    //Chat Activity Message
+    public ChatMessage request_sendmessage=new ChatMessage();
+    public ChatMessage response_sendmessage=new ChatMessage();
+    public boolean sendmessage=false;
+
+    //Chat Message
+    public ChatMessage request_historymessage=new ChatMessage();
+    public ChatMessage response_historymessage=new ChatMessage();
+    public ArrayList<ChatMessage> historymsglist=new ArrayList<ChatMessage>();
+    public boolean sendhistory=false;
+   // public ArrayList<ChatMessage> onlinemessage=new ArrayList<ChatMessage>();
+
+
+   // public Stack<ChatMessage> returnlistmsg=new Stack<ChatMessage>();
+    public String Loginemail="";
+
+   // public boolean send=false;
+   // public boolean sendUser=false;
+
+
+
     protected AndroidChatClient(){
 
     }
@@ -96,42 +131,101 @@ public class AndroidChatClient implements Runnable {
             Log.e("Connection","Unexpected exception: " + ioe.getMessage());
         }
     }
-    public void setSendChatMessage(ChatMessage chmsg){
-        sendChatMessage=chmsg;
-    }
-    public ChatMessage getSendChatMessage(ChatMessage chmsg){
-        return sendChatMessage;
-    }
+
     public void run()
     {
         while (thread != null)
         {
-            if(send==true) {
+            if(sendprofile==true) {
                 try {
                     Log.i("write","write to stream");
-                    if(sendChatMessage.command!=null)
-                        Log.i("command",sendChatMessage.command);
+                    if(request_profileMessageCheck.command!=null)
+                        Log.i("command",request_profileMessageCheck.command);
                     else
                         Log.i("command","null command");
-                    dataOutputStream.writeObject(sendChatMessage);
+                    dataOutputStream.writeObject(request_profileMessageCheck);
                     dataOutputStream.flush();
-                    send=false;
+                    sendprofile=false;
                 } catch (IOException ioe) {
                     Log.e("Connection", "Sending error: " + ioe.getMessage());
                     stop();
                     break;
                 }
             }
-            else if(sendUser==true){
+            if(sendlogout==true) {
                 try {
                     Log.i("write","write to stream");
-                    if(sendUserMessage.command!=null)
-                        Log.i("command",sendUserMessage.command);
+                    if(request_logoutMessageCheck.command!=null)
+                        Log.i("command",request_logoutMessageCheck.command);
                     else
                         Log.i("command","null command");
-                    dataOutputStream.writeObject(sendUserMessage);
+                    dataOutputStream.writeObject(request_logoutMessageCheck);
                     dataOutputStream.flush();
-                    sendUser=false;
+                    sendlogout=false;
+                } catch (IOException ioe) {
+                    Log.e("Connection", "Sending error: " + ioe.getMessage());
+                    stop();
+                    break;
+                }
+            }
+            if(sendfriends==true) {
+                try {
+                    Log.i("write","write to stream");
+                    if(request_friendsMessageCheck.command!=null)
+                        Log.i("command",request_friendsMessageCheck.command);
+                    else
+                        Log.i("command","null command");
+                    dataOutputStream.writeObject(request_friendsMessageCheck);
+                    dataOutputStream.flush();
+                    sendfriends=false;
+                } catch (IOException ioe) {
+                    Log.e("Connection", "Sending error: " + ioe.getMessage());
+                    stop();
+                    break;
+                }
+            }
+            if(sendchats==true) {
+                try {
+                    Log.i("write","write to stream");
+                    if(request_chatMessageCheck.command!=null)
+                        Log.i("command",request_chatMessageCheck.command);
+                    else
+                        Log.i("command","null command");
+                    dataOutputStream.writeObject(request_chatMessageCheck);
+                    dataOutputStream.flush();
+                    sendchats=false;
+                } catch (IOException ioe) {
+                    Log.e("Connection", "Sending error: " + ioe.getMessage());
+                    stop();
+                    break;
+                }
+            }
+            if(sendmessage==true) {
+                try {
+                    Log.i("write","write to stream");
+                    if(request_sendmessage.command!=null)
+                        Log.i("command",request_sendmessage.command);
+                    else
+                        Log.i("command","null command");
+                    dataOutputStream.writeObject(request_sendmessage);
+                    dataOutputStream.flush();
+                    sendmessage=false;
+                } catch (IOException ioe) {
+                    Log.e("Connection", "Sending error: " + ioe.getMessage());
+                    stop();
+                    break;
+                }
+            }
+            if(sendhistory==true){
+                try {
+                    Log.i("write","write to stream");
+                    if(request_historymessage.command!=null)
+                        Log.i("command",request_historymessage.command);
+                    else
+                        Log.i("command","null command");
+                    dataOutputStream.writeObject(request_historymessage);
+                    dataOutputStream.flush();
+                    sendhistory=false;
                 } catch (IOException ioe) {
                     Log.e("Connection", "Sending error: " + ioe.getMessage());
                     stop();
@@ -141,11 +235,11 @@ public class AndroidChatClient implements Runnable {
             else if(sendofflinecheck==true){
                 try {
                     Log.i("write","write to stream");
-                    if(newMessageCheck.command!=null)
-                        Log.i("command",newMessageCheck.command);
+                    if(request_offlineMessageCheck.command!=null)
+                        Log.i("command",request_offlineMessageCheck.command);
                     else
                         Log.i("command","null command");
-                    dataOutputStream.writeObject(newMessageCheck);
+                    dataOutputStream.writeObject(request_offlineMessageCheck);
                     dataOutputStream.flush();
                     sendofflinecheck=false;
                 } catch (IOException ioe) {
@@ -158,36 +252,39 @@ public class AndroidChatClient implements Runnable {
     }
     public void handle(ChatMessage chmsg) {
         Log.i("Res","response recvd");
-        returnmessage = new ChatMessage();
-        getUsermessage = new ChatMessage();
+  //      Log.i("Command",chmsg.command);
+//        Log.i("Message:",chmsg.message);
         if (chmsg!=null && chmsg.command.equals("RESPONSE_LOGOUT"))
         {
-
+            response_logoutMessageCheck=new ChatMessage();
+            response_logoutMessageCheck=chmsg;
             Log.i("Connection", "Good bye. Press RETURN to exit ...");
             stop();
         }
-        else if(chmsg!=null && chmsg.command.equals("RESPONSE_UPDATE_HISTORY")){
-
-            getUsermessage = chmsg;
-            Log.i("Command",getUsermessage.command);
-            Log.i("Message:",getUsermessage.message);
+        else if(chmsg!=null && (chmsg.command.equals("RESPONSE_GET_PROFILE") || chmsg.command.equals("RESPONSE_EDIT_PROFILE"))){
+            response_profileMessageCheck=new ChatMessage();
+            response_profileMessageCheck=chmsg;
         }
-        else{
-            returnmessage=chmsg;
-            Log.i("Command",returnmessage.command);
-            Log.i("Message:",returnmessage.message);
+        else if(chmsg!=null && (chmsg.command.equals("SEND_MESSAGE"))){
+            response_sendmessage=new ChatMessage();
+            response_sendmessage=chmsg;
+        }
+        else if(chmsg!=null && chmsg.command.equals("RESPONSE_UPDATE_HISTORY")){
+            response_historymessage = new ChatMessage();
+            response_historymessage = chmsg;
+
         }
 
     }
-    public void handleList(Stack<ChatMessage> chmsg)
+    public void handle_ChatList(Stack<ChatMessage> chmsg)
     {
-       // send=true;
-        returnmessage = new ChatMessage();
-        returnmessage=chmsg.pop();
-        Log.i("Command:",returnmessage.command);
-        Log.i("Message:",returnmessage.message);
-        returnlistmsg = new Stack<ChatMessage>();
-        returnlistmsg=chmsg;
+        // send=true;
+        response_chatMessageCheck = new ChatMessage();
+        response_chatMessageCheck=chmsg.pop();
+        Log.i("Command:",response_chatMessageCheck.command);
+        Log.i("Message:",response_chatMessageCheck.message);
+        chatmsglist = new Stack<ChatMessage>();
+        chatmsglist=chmsg;
 
        /* while(!returnlistmsg.isEmpty()){
             ChatMessage retmsg=returnlistmsg.pop();
@@ -195,39 +292,55 @@ public class AndroidChatClient implements Runnable {
             System.out.println("Message:"+retmsg.message);
         }*/
     }
-    public void handleUserList(ArrayList<ChatMessage> chmsg){
-        onlinemessage = new ArrayList<ChatMessage>();
-        onlinemessage=chmsg;
-        getUsermessage = new ChatMessage();
-        if(onlinemessage.size()>1)
+    public void handle_FriendList(Stack<ChatMessage> chmsg)
+    {
+       // send=true;
+        response_friendsMessageCheck = new ChatMessage();
+        response_friendsMessageCheck=chmsg.pop();
+        Log.i("Command:",response_friendsMessageCheck.command);
+        Log.i("Message:",response_friendsMessageCheck.message);
+        friendsmsglist = new Stack<ChatMessage>();
+        friendsmsglist=chmsg;
+
+       /* while(!returnlistmsg.isEmpty()){
+            ChatMessage retmsg=returnlistmsg.pop();
+            System.out.println("Email:"+retmsg.email);
+            System.out.println("Message:"+retmsg.message);
+        }*/
+    }
+    public void handle_History(ArrayList<ChatMessage> chmsg){
+        historymsglist = new ArrayList<ChatMessage>();
+        historymsglist=chmsg;
+        response_historymessage = new ChatMessage();
+        if(historymsglist.size()>1)
         {
 
-            getUsermessage.command="RESPONSE_GET_HISTORY";
-            getUsermessage.message="SUCCESS";
+            response_historymessage.command="RESPONSE_GET_HISTORY";
+            response_historymessage.message="SUCCESS";
         }
         else{
-            getUsermessage.command="RESPONSE_GET_HISTORY";
-            getUsermessage.message="FAILURE";
+            response_historymessage.command="RESPONSE_GET_HISTORY";
+            response_historymessage.message="FAILURE";
         }
-        Log.i("Command:",getUsermessage.command);
-        Log.i("Message:",getUsermessage.message);
+        Log.i("Command:",response_historymessage.command);
+        Log.i("Message:",response_historymessage.message);
     }
-    public void handleArrayList(ArrayList<String> chmsg){
+    public void handle_OfflineMessage(ArrayList<String> chmsg){
         offlinemsglist = new ArrayList<String>();
         offlinemsglist=chmsg;
-        res_newMessageCheck = new ChatMessage();
+        response_offlineMessageCheck = new ChatMessage();
         if(offlinemsglist.size()>1)
         {
 
-            res_newMessageCheck.command="RESPONSE_GET_OFFLINE_MSG";
-            res_newMessageCheck.message="SUCCESS";
+            response_offlineMessageCheck.command="RESPONSE_GET_OFFLINE_MSG";
+            response_offlineMessageCheck.message="SUCCESS";
         }
         else{
-            res_newMessageCheck.command="RESPONSE_GET_OFFLINE_MSG";
-            res_newMessageCheck.message="FAILURE";
+            response_offlineMessageCheck.command="RESPONSE_GET_OFFLINE_MSG";
+            response_offlineMessageCheck.message="FAILURE";
         }
-        Log.i("Command:",res_newMessageCheck.command);
-        Log.i("Message:",res_newMessageCheck.message);
+        Log.i("Command:",response_offlineMessageCheck.command);
+        Log.i("Message:",response_offlineMessageCheck.message);
     }
     public void start() throws IOException
     {
@@ -305,8 +418,8 @@ public class AndroidChatClient implements Runnable {
             public void run() {
                 if(runHandler){
                     AndroidChatClient chatClient = AndroidChatClient.getInstance();
-                    chatClient.newMessageCheck = new ChatMessage();
-                    chatClient.newMessageCheck.command = "GET_OFFLINE_MSG";
+                    chatClient.request_offlineMessageCheck = new ChatMessage();
+                    chatClient.request_offlineMessageCheck.command = "GET_OFFLINE_MSG";
                     Log.i("send", "Call from timer");
                     chatClient.sendofflinecheck = true;
                     handler.postDelayed(this, 10000);

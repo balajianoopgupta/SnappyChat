@@ -23,6 +23,8 @@ public class ChatMessage implements Serializable {
     public int ID;
     public int visibility;//0-FriendsOnly(Default) 1--Private 2--Public
     public boolean notifications;//Default true
+    public String usertype;
+    public boolean status;
 
 }
 
