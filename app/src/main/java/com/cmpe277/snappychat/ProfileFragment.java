@@ -17,29 +17,36 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.os.Environment;
 import android.graphics.Bitmap;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Switch;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
+
 import java.io.*;
 
 public class ProfileFragment extends Fragment {
     private static final String TAG = "ProfileFragment";
     private static int RESULT_LOAD_IMAGE = 1;
-    private OnFragmentInteractionListener mListener;
-
-    Button logOut;
-    ImageView imageView;
+    EditText aboutme, nickname, email, location, profession, interests;
     Context ApplicationContext;
+
+    private OnFragmentInteractionListener mListener;
+    Button logOut, editProfile, save, discard;
+    Switch notificationSetting;
+    ImageButton picture;
+    RadioButton r;
+    RadioGroup rg;
+    boolean isEnabled = false;
     String Loginemail;
-    EditText nickname;
-    EditText email;
-    EditText location;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -57,9 +64,7 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         Bundle bundle = this.getArguments();
         Loginemail = bundle.getString("EmailID");
-        Log.i(TAG,Loginemail);
-
-
+        Log.i(TAG, Loginemail);
 
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
@@ -70,15 +75,42 @@ public class ProfileFragment extends Fragment {
             mListener.onFragmentInteraction(uri);
         }
     }*/
-    public void UpdateProfileUI(String res_name,String res_email){
+    public void UpdateProfileUI(String res_name, String res_email) {
         //nickname = (EditText) andview.findViewById(R.id.Nickname);
         //email = (EditText) andview.findViewById(R.id.Email);
         nickname.setText(res_name);
         email.setText(res_email);
     }
+
     @Override
-    public void onViewCreated (View view,
-                               Bundle savedInstanceState){
+    public void onViewCreated(View view,
+                              Bundle savedInstanceState) {
+
+        picture = (ImageButton) getView().findViewById(R.id.profilePicture);
+        aboutme = (EditText) getView().findViewById(R.id.aboutme);
+        nickname = (EditText) getView().findViewById(R.id.nickname);
+        email = (EditText) getView().findViewById(R.id.email);
+        location = (EditText) getView().findViewById(R.id.location);
+        profession = (EditText) getView().findViewById(R.id.profession);
+        interests = (EditText) getView().findViewById(R.id.interests);
+        notificationSetting = (Switch) getView().findViewById(R.id.getNotification);
+        rg = (RadioGroup) getView().findViewById(R.id.visibilityOptions);
+        rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // checkedId is the RadioButton selected
+                Log.d("chec id", String.valueOf(checkedId));
+            }
+        });
+        //update
+        notificationSetting.setChecked(true);
+
+        aboutme.setEnabled(isEnabled);
+        nickname.setEnabled(isEnabled);
+        email.setEnabled(isEnabled);
+        location.setEnabled(isEnabled);
+        profession.setEnabled(isEnabled);
+        interests.setEnabled(isEnabled);
 
         logOut = (Button) view.findViewById(R.id.logOutBtn);
 
@@ -89,37 +121,50 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        Button buttonLoadImage = (Button) view.findViewById(R.id.buttonLoadPicture);
-        buttonLoadImage.setOnClickListener(new View.OnClickListener() {
-
+        editProfile = (Button) view.findViewById(R.id.editProfileBtn);
+        editProfile.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View arg0) {
-
-                Intent i = new Intent(
-                        Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
-                startActivityForResult(i, RESULT_LOAD_IMAGE);
+            public void onClick(View view) {
+                isEnabled = true;
+                showHideProfile();
             }
         });
 
-        nickname = (EditText) view.findViewById(R.id.Nickname);
-        email = (EditText) view.findViewById(R.id.Email);
-        imageView = (ImageView) view.findViewById(R.id.imgView);
+        save = (Button) view.findViewById(R.id.save);
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //save changes
+                isEnabled = false;
+                showHideProfile();
+            }
+        });
 
-        location = (EditText) view.findViewById(R.id.Location);
+        discard = (Button) view.findViewById(R.id.discard);
+        discard.setVisibility(view.VISIBLE);
+
+        discard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //put back previous values
+                isEnabled = false;
+                showHideProfile();
+            }
+        });
+        showHideProfile();
 
         new Thread(new Runnable() {
             public void run() {
-                AndroidChatClient chatClient=AndroidChatClient.getInstance();
-                chatClient.sendChatMessage=new ChatMessage();
-                chatClient.sendChatMessage.command="GET_PROFILE";
-                Log.i("send","Setting to true");
-                chatClient.send=true;
-                boolean checkresponse=false;
-                while(!checkresponse){
+                AndroidChatClient chatClient = AndroidChatClient.getInstance();
+                chatClient.sendChatMessage = new ChatMessage();
+                chatClient.sendChatMessage.command = "GET_PROFILE";
+                Log.i("send", "Setting to true");
+                chatClient.send = true;
+                boolean checkresponse = false;
+                while (!checkresponse) {
                     // Log.i("herer","response");
-                    if(chatClient.returnmessage!=null && chatClient.returnmessage.command!=null) {
+                    if (chatClient.returnmessage != null && chatClient.returnmessage.command != null) {
                         if (chatClient.returnmessage.command.equals("RESPONSE_GET_PROFILE")) {
                             //ChatMessage chmessage = new ChatMessage();
                             final ChatMessage chmessage = chatClient.returnmessage;
@@ -128,29 +173,27 @@ public class ProfileFragment extends Fragment {
                                 //update profile
                                 ///storage/sdcard/DCIM/Camera/IMG_20161128_085625.jpg
                                 Log.i("Nname", chmessage.nickname);
-                               try {
+                                try {
                                     String root = Environment.getExternalStorageDirectory().toString();
-                                    root=root+"/saved_images";
-                                   //myDir=new File("/mnt/sdcard/saved_images");
+                                    root = root + "/saved_images";
+                                    //myDir=new File("/mnt/sdcard/saved_images");
                                     File myDir = new File(root);
 
                                     if (!myDir.exists()) {
                                         Log.i("Directory", "does not exists");
                                         myDir.mkdir();
-                                    }
-                                    else{
+                                    } else {
                                         Log.i("Directory", "exists");
                                     }
                                     Log.i("Root", root);
-                                   // String filename=root+"/"+chmessage.email.split("@")[0]+".png";
-                                    String filename="/"+chmessage.email.split("@")[0]+".jpeg";
+                                    // String filename=root+"/"+chmessage.email.split("@")[0]+".png";
+                                    String filename = "/" + chmessage.email.split("@")[0] + ".jpeg";
 
-                                    File file = new File (myDir, filename);
-                                    if (file.exists ()) {
+                                    File file = new File(myDir, filename);
+                                    if (file.exists()) {
                                         file.delete();
                                         Log.i("file", "exists");
-                                    }
-                                   else{
+                                    } else {
                                         Log.i("file", "does not exists");
                                     }
                                     Log.i("Root", filename);
@@ -163,7 +206,7 @@ public class ProfileFragment extends Fragment {
                                     fos.flush();
                                     fos.close();
 
-                                } catch(Exception e){
+                                } catch (Exception e) {
                                     // some action
                                 }
                                 getActivity().runOnUiThread(new Runnable() {
@@ -181,7 +224,7 @@ public class ProfileFragment extends Fragment {
 
                                         ByteArrayInputStream inputStream = new ByteArrayInputStream(chmessage.pic);
                                         Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                                        imageView.setImageBitmap(bitmap);
+                                        picture.setImageBitmap(bitmap);
 
                                     }
                                 });
@@ -196,6 +239,47 @@ public class ProfileFragment extends Fragment {
         }).start();
 
 
+    }
+
+    public void onRadioButtonSelected(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+
+        switch (view.getId()) {
+            case R.id.visibility_private:
+                if (checked)
+                    Log.d("checked :", String.valueOf(view.getId()));
+                break;
+            case R.id.visibility_friends:
+                if (checked)
+                    Log.d("checked :", String.valueOf(view.getId()));
+                break;
+            case R.id.visibility_public:
+                if (checked)
+                    Log.d("checked :", String.valueOf(view.getId()));
+                break;
+
+        }
+    }
+
+    public void showHideProfile() {
+        aboutme.setEnabled(isEnabled);
+        nickname.setEnabled(isEnabled);
+        email.setEnabled(isEnabled);
+        location.setEnabled(isEnabled);
+        profession.setEnabled(isEnabled);
+        interests.setEnabled(isEnabled);
+        picture.setEnabled(isEnabled);
+        if (isEnabled) {
+            editProfile.setVisibility(View.INVISIBLE);
+            save.setVisibility(View.VISIBLE);
+            discard.setVisibility(View.VISIBLE);
+        } else {
+            editProfile.setVisibility(View.VISIBLE);
+            save.setVisibility(View.VISIBLE);
+            discard.setVisibility(View.VISIBLE);
+
+        }
 
     }
 
@@ -204,14 +288,12 @@ public class ProfileFragment extends Fragment {
         super.onAttach(context);
         Activity a;
         if (context instanceof Activity) {
-            ApplicationContext=context;
-            a=(Activity) context;
+            ApplicationContext = context;
+            a = (Activity) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
-
-
     }
 
     @Override
@@ -235,7 +317,7 @@ public class ProfileFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    public void logOut(){
+    public void logOut() {
 
         LoginActivity.mGoogleApiClient.connect();
         LoginActivity.mGoogleApiClient.registerConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
@@ -243,7 +325,7 @@ public class ProfileFragment extends Fragment {
             public void onConnected(@Nullable Bundle bundle) {
 
                 FirebaseAuth.getInstance().signOut();
-                if(LoginActivity.mGoogleApiClient.isConnected()) {
+                if (LoginActivity.mGoogleApiClient.isConnected()) {
                     Auth.GoogleSignInApi.signOut(LoginActivity.mGoogleApiClient).setResultCallback(new ResultCallback<Status>() {
                         @Override
                         public void onResult(@NonNull Status status) {
@@ -254,14 +336,13 @@ public class ProfileFragment extends Fragment {
                                 getActivity().finish();
 
 
-
                                 new Thread(new Runnable() {
                                     public void run() {
-                                        AndroidChatClient chatClient=AndroidChatClient.getInstance();
-                                        chatClient.sendChatMessage=new ChatMessage();
-                                        chatClient.sendChatMessage.command="LOGOUT";
-                                        Log.i("send","Setting to true");
-                                        chatClient.send=true;
+                                        AndroidChatClient chatClient = AndroidChatClient.getInstance();
+                                        chatClient.sendChatMessage = new ChatMessage();
+                                        chatClient.sendChatMessage.command = "LOGOUT";
+                                        Log.i("send", "Setting to true");
+                                        chatClient.send = true;
 
                                     }
                                 }).start();
@@ -286,7 +367,7 @@ public class ProfileFragment extends Fragment {
 
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == Activity.RESULT_OK && null != data) {
             Uri selectedImage = data.getData();
-            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
             Cursor cursor = ApplicationContext.getContentResolver().query(selectedImage,
                     filePathColumn, null, null, null);
@@ -296,12 +377,10 @@ public class ProfileFragment extends Fragment {
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
             String picturePath = cursor.getString(columnIndex);
             cursor.close();
-            Log.d("FILEPATH",picturePath);
+            Log.d("FILEPATH", picturePath);
 
-            imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+            picture.setImageBitmap(BitmapFactory.decodeFile(picturePath));
 
         }
-
-
     }
 }

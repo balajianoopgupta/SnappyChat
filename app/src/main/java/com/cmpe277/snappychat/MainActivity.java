@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(chatfragment, "Chat");
         adapter.addFragment(profilefragment, "Profile");
         viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(0);
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {

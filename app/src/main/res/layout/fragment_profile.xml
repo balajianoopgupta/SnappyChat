@@ -1,45 +1,242 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context="com.cmpe277.snappychat.MainActivity"
+            android:fillViewport="true"
+            android:paddingBottom="50dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp">
+
+    <RelativeLayout android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+        <ImageButton
+            android:layout_width="125dp"
+            android:layout_height="125dp"
+            app:srcCompat="@drawable/image"
+            android:id="@+id/profilePicture"
+            android:layout_centerHorizontal="true"
+            android:scaleType="fitCenter"
+            android:layout_marginTop="20dp"/>
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/profilePicture"
+            android:id="@+id/profileInfo">
+
+            <TextView
+                android:text="Nickname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/nicknameLabel"
+                android:layout_below="@+id/imageButton"
+                android:paddingTop="5dp"
+                android:paddingLeft="5dp"/>
+
+            <EditText
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                tools:context="com.cmpe277.snappychat.MainActivity">
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:text="Nickname"
+                android:ems="10"
+                android:id="@+id/nickname"
+                android:layout_below="@+id/nicknameLabel"
+                android:paddingTop="5dp"
+                android:paddingLeft="5dp"
+                android:textColor="@android:color/white"/>
 
-    <Button
-        android:text="Log Out"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:id="@+id/logOutBtn" />
+            <TextView
+                android:text="About me"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/aboutMeLabel"
+                android:layout_below="@+id/nickname"
+                android:paddingTop="5dp"
+                android:paddingLeft="5dp"/>
 
-    <ImageView
-        android:id="@+id/imgView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        ></ImageView>
-    <Button
-        android:id="@+id/buttonLoadPicture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Load Picture"
-        android:layout_gravity="center"></Button>
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/Nickname"
-        android:layout_gravity="left"
-        android:hint="Nickname"/>
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/Email"
-        android:layout_gravity="left"
-        android:hint="Email"/>
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/Location"
-        android:layout_gravity="left"
-        android:hint="Location"/>
-</LinearLayout>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:text="About Me"
+                android:id="@+id/aboutme"
+                android:layout_below="@+id/aboutMeLabel"
+                android:paddingTop="5dp"
+                android:paddingLeft="5dp"
+                android:textColor="@android:color/white"/>
+
+            <TextView
+                android:text="Email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/emailLabel"
+                android:layout_below="@+id/aboutme"
+                android:paddingTop="5dp"
+                android:paddingLeft="5dp"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:text="Email"
+                android:id="@+id/email"
+                android:layout_below="@+id/emailLabel"
+                android:paddingTop="5dp"
+                android:paddingLeft="5dp"
+                android:textColor="@android:color/white"/>
+
+            <TextView
+                android:text="Location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/locationLabel"
+                android:layout_below="@+id/email"
+                android:paddingTop="5dp"
+                android:paddingLeft="5dp"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:text="Location"
+                android:id="@+id/location"
+                android:layout_below="@+id/locationLabel"
+                android:paddingTop="5dp"
+                android:paddingLeft="5dp"
+                android:textColor="@android:color/white"/>
+
+            <TextView
+                android:text="Profession"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/professionlabel"
+                android:layout_below="@+id/location"
+                android:paddingTop="5dp"
+                android:paddingLeft="5dp"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:text="Profession"
+                android:id="@+id/profession"
+                android:layout_below="@+id/professionlabel"
+                android:paddingTop="5dp"
+                android:paddingLeft="5dp"
+                android:textColor="@android:color/white"/>
+
+            <TextView
+                android:text="Interests"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/interestsLabel"
+                android:layout_below="@+id/profession"
+                android:paddingTop="5dp"
+                android:paddingLeft="5dp"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:text="Interests"
+                android:id="@+id/interests"
+                android:layout_below="@+id/interestsLabel"
+                android:paddingTop="5dp"
+                android:paddingLeft="5dp"
+                android:textColor="@android:color/white"/>
+
+
+            <LinearLayout android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_weight="1"
+                          android:orientation="horizontal">
+                <TextView android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:layout_weight="0.5"
+                          android:text="Receive email Notifications"
+                          android:textColor="@android:color/white"
+                          android:textSize="18sp">
+                </TextView>
+
+                <Switch
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/getNotification"
+                    android:layout_weight="0.5"/>
+            </LinearLayout>
+
+            <TextView
+                android:text="Settings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/settings"
+                android:layout_below="@+id/interests"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:paddingTop="5dp"/>
+
+            <RadioGroup android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:id="@+id/visibilityOptions">
+
+                <RadioButton android:id="@+id/visibility_private"
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:text="Private: Only I can see my profile"
+                    />
+                <RadioButton android:id="@+id/visibility_friends"
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:text="Friends Only: Profile is visible to me and my friends"
+                    />
+                <RadioButton android:id="@+id/visibility_public"
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:text="Public: Everyone can see my profile"
+                    />
+            </RadioGroup>
+        </RadioGroup>
+        <Button
+            android:text="Edit Profile"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/editProfileBtn"
+            android:layout_below="@+id/profileInfo"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:layout_below="@+id/profileInfo">
+
+            <Button
+                android:id="@+id/save"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_weight="0.5"
+                android:text="Save Changes"/>
+
+            <Button
+                android:id="@+id/discard"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_weight="0.5"
+                android:text="Discard Changes"/>
+        </LinearLayout>
+
+        <Button
+            android:text="Logout"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/logOutBtn"
+            android:layout_below="@+id/editProfileBtn" />
+
+    </RelativeLayout>
+
+
+</ScrollView>
