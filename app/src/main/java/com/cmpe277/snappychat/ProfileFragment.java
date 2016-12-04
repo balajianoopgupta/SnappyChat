@@ -5,12 +5,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -189,7 +192,7 @@ public class ProfileFragment extends Fragment {
                                     }
                                     Log.i("Root", root);
                                     // String filename=root+"/"+chmessage.email.split("@")[0]+".png";
-                                    String filename = "/" + chmessage.email.split("@")[0] + ".jpeg";
+                                    String filename = "/" + chmessage.email.split("@")[0] + ".png";
 
                                     File file = new File(myDir, filename);
                                     if (file.exists()) {
@@ -416,24 +419,32 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    public void editMessage(){
+    public void editMessage()  {
+
+        final ChatMessage send_chmsg=new ChatMessage();
+        send_chmsg.command="EDIT_PROFILE";
+        send_chmsg.nickname=nickname.getText().toString();
+        send_chmsg.aboutme=aboutme.getText().toString();
+        send_chmsg.location=location.getText().toString();
+        send_chmsg.profession=profession.getText().toString();
+        send_chmsg.interests=interests.getText().toString();
+        send_chmsg.notifications=notificationSetting.isEnabled();
+        send_chmsg.visibility=AndroidChatClient.getInstance().radiobuttonid;
+        send_chmsg.email=AndroidChatClient.getInstance().Loginemail;
+        Drawable drawable= ResourcesCompat.getDrawable(getResources(), R.drawable.image, null);
+        Bitmap bitmap1=((BitmapDrawable)drawable).getBitmap();
+        ByteArrayOutputStream bytearrayoutputstream=new ByteArrayOutputStream();;
+
+        bitmap1.compress(Bitmap.CompressFormat.PNG,100,bytearrayoutputstream);
+
+        send_chmsg.pic = bytearrayoutputstream.toByteArray();
+
 
         new Thread(new Runnable() {
             public void run() {
                 final AndroidChatClient chatClient = AndroidChatClient.getInstance();
                 chatClient.sendChatMessage = new ChatMessage();
-                chatClient.sendChatMessage.command = "EDIT_PROFILE";
-                chatClient.sendChatMessage.nickname=nickname.getText().toString();
-                chatClient.sendChatMessage.aboutme=aboutme.getText().toString();
-                chatClient.sendChatMessage.location=location.getText().toString();
-                chatClient.sendChatMessage.profession=profession.getText().toString();
-                chatClient.sendChatMessage.interests=interests.getText().toString();
-                chatClient.sendChatMessage.notifications=notificationSetting.isEnabled();
-                chatClient.sendChatMessage.visibility=AndroidChatClient.getInstance().radiobuttonid;
-                Bitmap bmp=picture.getDrawingCache();
-                ByteArrayOutputStream baos=new ByteArrayOutputStream();
-                bmp.compress(Bitmap.CompressFormat.PNG,100,baos);
-                chatClient.sendChatMessage.pic=baos.toByteArray();
+                chatClient.sendChatMessage=send_chmsg;
                 Log.i("send", "Setting to true");
                 chatClient.send = true;
                 boolean checkresponse = false;
