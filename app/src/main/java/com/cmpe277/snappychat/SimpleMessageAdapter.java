@@ -1,11 +1,13 @@
 package com.cmpe277.snappychat;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -68,7 +70,9 @@ public class SimpleMessageAdapter extends BaseAdapter {
         setAlignment(holder, myMsg);
         holder.txtMessage.setText(chatMessage.getMessage());
         holder.txtInfo.setText(chatMessage.getDate());
-
+        if(!chatMessage.getFilepath().isEmpty()) {
+            holder.transferfile.setImageBitmap(BitmapFactory.decodeFile(chatMessage.getFilepath()));
+        }
         return convertView;
     }
 
@@ -101,6 +105,11 @@ public class SimpleMessageAdapter extends BaseAdapter {
             layoutParams = (LinearLayout.LayoutParams) holder.txtInfo.getLayoutParams();
             layoutParams.gravity = Gravity.RIGHT;
             holder.txtInfo.setLayoutParams(layoutParams);
+
+            layoutParams = (LinearLayout.LayoutParams) holder.transferfile.getLayoutParams();
+            layoutParams.gravity = Gravity.RIGHT;
+            holder.transferfile.setLayoutParams(layoutParams);
+
         } else {
             holder.contentWithBG.setBackgroundResource(R.drawable.out);
 
@@ -121,6 +130,10 @@ public class SimpleMessageAdapter extends BaseAdapter {
             layoutParams = (LinearLayout.LayoutParams) holder.txtInfo.getLayoutParams();
             layoutParams.gravity = Gravity.LEFT;
             holder.txtInfo.setLayoutParams(layoutParams);
+
+            layoutParams = (LinearLayout.LayoutParams) holder.transferfile.getLayoutParams();
+            layoutParams.gravity = Gravity.LEFT;
+            holder.transferfile.setLayoutParams(layoutParams);
         }
     }
 
@@ -130,6 +143,7 @@ public class SimpleMessageAdapter extends BaseAdapter {
         holder.content = (LinearLayout) v.findViewById(R.id.content);
         holder.contentWithBG = (LinearLayout) v.findViewById(R.id.contentWithBackground);
         holder.txtInfo = (TextView) v.findViewById(R.id.txtInfo);
+        holder.transferfile=(ImageView) v.findViewById(R.id.transferfile);
         return holder;
     }
 
@@ -138,5 +152,6 @@ public class SimpleMessageAdapter extends BaseAdapter {
         public TextView txtInfo;
         public LinearLayout content;
         public LinearLayout contentWithBG;
+        public ImageView transferfile;
     }
 }
