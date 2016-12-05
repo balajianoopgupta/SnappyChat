@@ -74,6 +74,10 @@ public class AndroidChatClient implements Runnable {
     public boolean sendhistory=false;
    // public ArrayList<ChatMessage> onlinemessage=new ArrayList<ChatMessage>();
 
+    //Accept_Reject Message
+    public ChatMessage request_accept_reject=new ChatMessage();
+    public ChatMessage response_accept_reject=new ChatMessage();
+    public boolean sendacceptreject=false;
 
    // public Stack<ChatMessage> returnlistmsg=new Stack<ChatMessage>();
     public String Loginemail="";
@@ -112,7 +116,7 @@ public class AndroidChatClient implements Runnable {
             chatClient.sendChatMessage.command = "GET_OFFLINE_MSG";
             // Log.i("send", "Setting to true");
             chatClient.send = true;*/
-           //calltimer();
+           calltimer();
 
 
 
@@ -232,7 +236,7 @@ public class AndroidChatClient implements Runnable {
                     break;
                 }
             }
-            else if(sendofflinecheck==true){
+            if(sendofflinecheck==true){
                 try {
                     Log.i("write","write to stream");
                     if(request_offlineMessageCheck.command!=null)
@@ -242,6 +246,23 @@ public class AndroidChatClient implements Runnable {
                     dataOutputStream.writeObject(request_offlineMessageCheck);
                     dataOutputStream.flush();
                     sendofflinecheck=false;
+                } catch (IOException ioe) {
+                    Log.e("Connection", "Sending error: " + ioe.getMessage());
+                    stop();
+                    break;
+                }
+            }
+
+            if(sendacceptreject==true){
+                try {
+                    Log.i("write","write to stream");
+                    if(request_accept_reject.command!=null)
+                        Log.i("command",request_accept_reject.command);
+                    else
+                        Log.i("command","null command");
+                    dataOutputStream.writeObject(request_accept_reject);
+                    dataOutputStream.flush();
+                    sendacceptreject=false;
                 } catch (IOException ioe) {
                     Log.e("Connection", "Sending error: " + ioe.getMessage());
                     stop();
@@ -272,6 +293,11 @@ public class AndroidChatClient implements Runnable {
         else if(chmsg!=null && chmsg.command.equals("RESPONSE_UPDATE_HISTORY")){
             response_historymessage = new ChatMessage();
             response_historymessage = chmsg;
+
+        }
+        else if(chmsg!=null && chmsg.command.equals("RESPONSE_ACCEPT_REJECT_FRIEND_REQUEST")){
+            response_accept_reject = new ChatMessage();
+            response_accept_reject = chmsg;
 
         }
 

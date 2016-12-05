@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:layout_width="match_parent"
-android:layout_height="wrap_content">
+<RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginTop="10dp"
+    android:background="@android:color/transparent">
+
     <de.hdodenhof.circleimageview.CircleImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/userImage"
@@ -11,44 +16,108 @@ android:layout_height="wrap_content">
         android:src="@drawable/image"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_weight="1"
         app:civ_border_width="2dp"
         app:civ_border_color="#FF000000"/>
-    <TextView
-        android:id="@+id/userNickName"
-        android:layout_alignParentTop="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_toRightOf="@+id/userImage"
-        android:text="Nick Name"
-        android:textColor="@android:color/holo_purple"
-        android:textAppearance="?attr/textAppearanceListItem"
-        android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/userEmail"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/userNickName"
-        android:layout_marginLeft="16dp"
-        android:layout_toRightOf="@+id/userImage"
-        android:ellipsize="end"
-        android:text="User Email"
-        android:textColor="@android:color/white"
-        android:textAppearance="?attr/textAppearanceListItem"
-        android:textSize="14sp" />
+        android:layout_weight="1"
+        android:layout_marginTop="15dp">
 
-    <TextView
-        android:id="@+id/userStatus"
-        android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/userNickName"
+            android:layout_alignParentTop="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_toRightOf="@+id/userImage"
+            android:text="Nick Name"
+            android:textColor="@android:color/holo_purple"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:layout_weight="1"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/userEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/userNickName"
+            android:layout_marginLeft="16dp"
+            android:layout_toRightOf="@+id/userImage"
+            android:ellipsize="end"
+            android:text="User Email"
+            android:textColor="@android:color/white"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:layout_weight="1"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/userStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/userEmail"
+            android:layout_marginLeft="16dp"
+            android:layout_toRightOf="@+id/userImage"
+            android:ellipsize="end"
+            android:text="User Status"
+            android:textColor="@android:color/holo_green_dark"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:layout_weight="1"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/usertype"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/userStatus"
+            android:layout_marginLeft="16dp"
+            android:layout_toRightOf="@+id/userImage"
+            android:ellipsize="end"
+            android:text=""
+            android:textColor="@android:color/holo_green_dark"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:layout_weight="1"
+            android:visibility="invisible"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/userEmail"
-        android:layout_marginLeft="16dp"
-        android:layout_toRightOf="@+id/userImage"
-        android:ellipsize="end"
-        android:text="User Status"
-        android:textColor="@android:color/holo_green_dark"
-        android:textAppearance="?attr/textAppearanceListItem"
-        android:textSize="14sp" />
-</RelativeLayout>
+        android:layout_weight="1">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            app:srcCompat="@drawable/friends"
+            android:id="@+id/friends" />
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            app:srcCompat="@drawable/accept"
+            android:id="@+id/acceptBtn"
+            />
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            app:srcCompat="@drawable/reject"
+            android:id="@+id/rejectBtn" />
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            app:srcCompat="@drawable/addfriend"
+            android:id="@+id/pending" />
+
+
+    </LinearLayout>
+
+</RadioGroup>

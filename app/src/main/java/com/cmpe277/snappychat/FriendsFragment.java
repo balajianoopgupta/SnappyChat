@@ -100,7 +100,7 @@ public class FriendsFragment extends Fragment implements FriendsListAdapter.Item
 
 
                                         // specify an adapter (see also next example)
-                                        mAdapter =new FriendsListAdapter(getActivity().getApplicationContext(),rowListItem);
+                                        mAdapter =new FriendsListAdapter(getActivity().getApplicationContext(),rowListItem,getActivity());
                                         mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
                                         mRecyclerView.setAdapter(mAdapter);
                                         mRecyclerView.setLayoutManager(mLayoutManager);
