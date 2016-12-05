@@ -3,7 +3,7 @@
 <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-android:layout_height="wrap_content"
+    android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:layout_marginTop="10dp"
     android:background="@android:color/transparent">
@@ -14,8 +14,7 @@ android:layout_height="wrap_content"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:src="@drawable/image"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
+        android:layout_marginStart="5dp"
         android:layout_marginLeft="5dp"
         android:layout_weight="1"
         app:civ_border_width="2dp"
@@ -25,97 +24,114 @@ android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_marginTop="15dp">
+        android:layout_weight="1">
 
         <TextView
             android:id="@+id/userNickName"
-            android:layout_alignParentTop="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
-            android:layout_toRightOf="@+id/userImage"
-            android:text="Nick Name"
+            android:text="@string/nick_name"
             android:textColor="@android:color/holo_purple"
             android:textAppearance="?attr/textAppearanceListItem"
             android:layout_weight="1"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:textAlignment="center" />
 
         <TextView
             android:id="@+id/userEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/userNickName"
+            android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
-            android:layout_toRightOf="@+id/userImage"
             android:ellipsize="end"
-            android:text="User Email"
+            android:text="@string/user_email"
             android:textColor="@android:color/white"
             android:textAppearance="?attr/textAppearanceListItem"
             android:layout_weight="1"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:textAlignment="center"
+            android:layout_marginTop="5dp" />
 
         <TextView
             android:id="@+id/userStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/userEmail"
+            android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
-            android:layout_toRightOf="@+id/userImage"
             android:ellipsize="end"
-            android:text="User Status"
+            android:text="@string/user_status"
             android:textColor="@android:color/holo_green_dark"
             android:textAppearance="?attr/textAppearanceListItem"
             android:layout_weight="1"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:textAlignment="center"
+            android:layout_marginTop="5dp" />
 
-        <TextView
-            android:id="@+id/usertype"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/userStatus"
-            android:layout_marginLeft="16dp"
-            android:layout_toRightOf="@+id/userImage"
-            android:ellipsize="end"
-            android:text=""
-            android:textColor="@android:color/holo_green_dark"
-            android:textAppearance="?attr/textAppearanceListItem"
+        <!--<TextView-->
+            <!--android:id="@+id/usertype"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@+id/userStatus"-->
+            <!--android:layout_marginLeft="16dp"-->
+            <!--android:layout_toRightOf="@+id/userImage"-->
+            <!--android:ellipsize="end"-->
+            <!--android:text=""-->
+            <!--android:textColor="@android:color/holo_green_dark"-->
+            <!--android:textAppearance="?attr/textAppearanceListItem"-->
+            <!--android:layout_weight="1"-->
+            <!--android:visibility="invisible"-->
+            <!--android:textSize="14sp" />-->
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:visibility="invisible"
-            android:textSize="14sp" />
+            android:layout_marginTop="5dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                app:srcCompat="@drawable/accept"
+                android:id="@+id/acceptBtn"
+                android:layout_weight="1"
+                android:contentDescription="@string/accept_button" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                app:srcCompat="@drawable/reject"
+                android:id="@+id/rejectBtn"
+                android:layout_weight="1"
+                android:contentDescription="@string/reject_button" />
+        </LinearLayout>
+
     </LinearLayout>
-
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:layout_gravity="center_vertical|center_horizontal">
 
         <ImageView
             android:layout_width="32dp"
             android:layout_height="32dp"
             app:srcCompat="@drawable/friends"
-            android:id="@+id/friends" />
+            android:layout_weight="1"
+            android:id="@+id/friends"
+            android:contentDescription="@string/friends" />
 
         <ImageView
             android:layout_width="32dp"
             android:layout_height="32dp"
-            app:srcCompat="@drawable/accept"
-            android:id="@+id/acceptBtn"
-            />
-
-        <ImageView
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            app:srcCompat="@drawable/reject"
-            android:id="@+id/rejectBtn" />
-
-        <ImageView
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            app:srcCompat="@drawable/addfriend"
-            android:id="@+id/pending" />
+            android:layout_weight="1"
+            app:srcCompat="@drawable/pending"
+            android:id="@+id/pending"
+            android:contentDescription="@string/add_friend" />
 
 
     </LinearLayout>

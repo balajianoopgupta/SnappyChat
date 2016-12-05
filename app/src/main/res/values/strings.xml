@@ -7,4 +7,11 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="loading">Signing In</string>
     <string name="title_activity_chat">ChatActivity</string>
+    <string name="nick_name">Nick Name</string>
+    <string name="user_email">User Email</string>
+    <string name="user_status">User Status</string>
+    <string name="accept_button">Accept Button</string>
+    <string name="add_friend">Add Friend</string>
+    <string name="friends">Friends</string>
+    <string name="reject_button">Reject Button</string>
 </resources>
