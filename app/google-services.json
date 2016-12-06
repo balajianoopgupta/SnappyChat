@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "822694277423-2nj8c9klgprvc1rg8f57ijs4b5db6e8o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cmpe277.snappychat",
+            "certificate_hash": "4F84AAE0DFD9AC88BC655FE87E6657BCD2D606BB"
+          }
+        },
+        {
           "client_id": "822694277423-kh04qjkr74fue1f9bmutd2rpl2u4egku.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
