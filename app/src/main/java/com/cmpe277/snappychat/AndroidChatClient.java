@@ -79,7 +79,12 @@ public class AndroidChatClient implements Runnable {
     public ChatMessage response_accept_reject=new ChatMessage();
     public boolean sendacceptreject=false;
 
-   // public Stack<ChatMessage> returnlistmsg=new Stack<ChatMessage>();
+    // time line data
+    public ChatMessage request_timeline = new ChatMessage();
+    public ChatMessage response_timeline = new ChatMessage();
+    public Stack<ChatMessage> timeLineList=new Stack<ChatMessage>();
+    public boolean sendTimeLineList = false;
+
     public String Loginemail="";
 
    // public boolean send=false;
@@ -269,6 +274,24 @@ public class AndroidChatClient implements Runnable {
                     break;
                 }
             }
+
+            if(sendTimeLineList == true){
+                try {
+                    if(request_timeline != null){
+                        Log.i("Time Line Command", request_timeline.command);
+                    }
+                    else {
+
+                    }
+                    dataOutputStream.writeObject(request_timeline);
+                    dataOutputStream.flush();
+                    sendTimeLineList = false;
+                }
+                catch (IOException e){
+                    stop();
+                    break;
+                }
+            }
         }
     }
     public void handle(ChatMessage chmsg) {
@@ -298,8 +321,8 @@ public class AndroidChatClient implements Runnable {
         else if(chmsg!=null && chmsg.command.equals("RESPONSE_ACCEPT_REJECT_FRIEND_REQUEST")){
             response_accept_reject = new ChatMessage();
             response_accept_reject = chmsg;
-
         }
+        //ADD HERE FOR TIME LINE STUFF;
 
     }
     public void handle_ChatList(Stack<ChatMessage> chmsg)
@@ -318,6 +341,14 @@ public class AndroidChatClient implements Runnable {
             System.out.println("Message:"+retmsg.message);
         }*/
     }
+
+    public void handle_TimeLineList(Stack<ChatMessage> chmsg){
+        response_timeline = new ChatMessage();
+        response_timeline = chmsg.pop();
+        timeLineList = new Stack<>();
+        timeLineList = chmsg;
+    }
+
     public void handle_FriendList(Stack<ChatMessage> chmsg)
     {
        // send=true;

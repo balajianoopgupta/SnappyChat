@@ -7,4 +7,6 @@
     <string name="add_friend">Add Friend</string>
     <string name="friends">Friends</string>
     <string name="reject_button">Reject Button</string>
+    <string name="time_stamp">Time Stamp</string>
+    <string name="userStatusMessage">User Status</string>
 </resources>
