@@ -136,7 +136,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.ViewHo
             public void run() {
                 AndroidChatClient chatClient = AndroidChatClient.getInstance();
                 chatClient.request_timeline = new ChatMessage();
-                chatClient.request_timeline.command = "SEND_TIMELINE_DATA";
+                chatClient.request_timeline.command = "GET_TIMELINE_DATA";
                 chatClient.request_timeline.email = usremail;
                 Log.i("send", "Setting to true");
                 //chatClient.sendacceptreject = true;
