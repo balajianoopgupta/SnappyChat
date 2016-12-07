@@ -144,7 +144,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.ViewHo
                 while (!checkresponse) {
                     // Log.i("herer","response");
                     if (chatClient.response_timeline != null && chatClient.response_timeline.command != null) {
-                        if (chatClient.response_accept_reject.command.equals("RESPONSE_TIMELINE")) {
+                        if (chatClient.response_timeline.command.equals("RESPONSE_GET_TIMELINE")) {
                             //ChatMessage chmessage = new ChatMessage();
                             final ChatMessage chmessage = chatClient.response_timeline;
                             checkresponse = true;
@@ -156,18 +156,6 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.ViewHo
                                     @Override
                                     public void run() {
 
-                                        //if accept then displays friends image and hide accept and reject buttons
-//                                        if (response.equals("ACCEPT")) {
-//                                            viewHolder.friends.setVisibility(View.VISIBLE);
-//                                            viewHolder.acceptBtn.setVisibility(View.INVISIBLE);
-//                                            viewHolder.rejectBtn.setVisibility(View.INVISIBLE);
-//                                        }
-
-                                        //if reject was selected remove item from itemlist
-//                                        if (response.equals("REJECT")) {
-//                                            itemList.remove(pos);
-//                                            notifyDataSetChanged();
-//                                        }
                                     }
                                 });
                             }

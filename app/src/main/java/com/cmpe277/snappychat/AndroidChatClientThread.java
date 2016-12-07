@@ -75,7 +75,7 @@ public class AndroidChatClientThread extends Thread
                                 } else if (stckmessage.peek().command.equals("RESPONSE_GET_FRIENDLIST")) {
                                     client.handle_FriendList((Stack<ChatMessage>) obj);
                                 }
-                                else if (stckmessage.peek().command.equals("RESPONSE_TIMELINE")){
+                                else if (stckmessage.peek().command.equals("RESPONSE_GET_TIMELINE")){
                                     client.handle_TimeLineList((Stack<ChatMessage>) obj);
                                 }
                             } else {

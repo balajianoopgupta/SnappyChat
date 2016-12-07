@@ -323,6 +323,10 @@ public class AndroidChatClient implements Runnable {
             response_accept_reject = chmsg;
         }
         //ADD HERE FOR TIME LINE STUFF;
+        else if(chmsg != null && chmsg.command.equals("RESPONSE_GET_TIMELINE")){
+            response_timeline = new ChatMessage();
+            response_timeline = chmsg;
+        }
 
     }
     public void handle_ChatList(Stack<ChatMessage> chmsg)
