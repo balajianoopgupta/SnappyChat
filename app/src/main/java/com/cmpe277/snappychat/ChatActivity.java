@@ -81,7 +81,7 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem)
     {
-        //onBackPressed();
+        onBackPressed();
         switch(menuItem.getItemId()) {
             case R.id.file_attach:
                 Log.i("Clicked","Clicked attach");
@@ -293,8 +293,6 @@ public class ChatActivity extends AppCompatActivity {
                             chatClient.request_historymessage.email = toEmail;
                             // chatClient.getUsermessage=new ChatMessage();
                             chatClient.sendhistory = true;
-
-
                         }
                     }
 
@@ -302,9 +300,6 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
         thread.start();
-
-
-
     }
 
     @Override

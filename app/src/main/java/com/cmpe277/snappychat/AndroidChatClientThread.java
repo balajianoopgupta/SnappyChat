@@ -78,6 +78,9 @@ public class AndroidChatClientThread extends Thread
                                 else if (stckmessage.peek().command.equals("RESPONSE_GET_TIMELINE")){
                                     client.handle_TimeLineList((Stack<ChatMessage>) obj);
                                 }
+                                else if (stckmessage.peek().command.equals("RESPONSE_SEARCH_USER")){
+                                    client.handle_SearchList((Stack<ChatMessage>) obj);
+                                }
                             } else {
                                 ChatMessage chms = new ChatMessage();
                                 chms.command = "RESPONSE_LOGOUT";

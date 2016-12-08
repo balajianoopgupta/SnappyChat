@@ -10,4 +10,7 @@
     <string name="reject_button">Reject Button</string>
     <string name="time_stamp">Time Stamp</string>
     <string name="userStatusMessage">User Status</string>
+    <string name="search">Search</string>
+    <string name="email">Email</string>
+    <string name="online_or_offline">Online_Offline</string>
 </resources>

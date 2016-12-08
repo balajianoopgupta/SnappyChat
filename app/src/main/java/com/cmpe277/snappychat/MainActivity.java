@@ -66,9 +66,13 @@ public class MainActivity extends AppCompatActivity {
         ProfileFragment profilefragment=new ProfileFragment();
         profilefragment.setArguments(fragmentbundle);
 
+        SearchFragment searchfragment = new SearchFragment();
+        searchfragment.setArguments(fragmentbundle);
+
         adapter.addFragment(homefragment, "Home");
         adapter.addFragment(friendsfragment, "Friends");
         adapter.addFragment(chatfragment, "Chat");
+        adapter.addFragment(searchfragment,"Search");
         adapter.addFragment(profilefragment, "Profile");
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(0);

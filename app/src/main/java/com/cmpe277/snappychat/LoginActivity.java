@@ -133,7 +133,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         public void run() {
                             AndroidChatClient client=AndroidChatClient.getInstance();
                           //  client.createconnection("192.168.0.130", 9999,loginemaild);
-                            client.createconnection("192.168.0.105", 9999,loginemaild);
+                            client.createconnection("192.168.0.128", 9999,loginemaild);
                         }
                     }).start();
 

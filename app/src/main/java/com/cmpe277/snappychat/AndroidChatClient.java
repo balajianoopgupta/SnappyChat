@@ -90,6 +90,16 @@ public class AndroidChatClient implements Runnable {
    // public boolean send=false;
    // public boolean sendUser=false;
 
+    //Search
+    public ChatMessage request_searchmessage=new ChatMessage();
+    public ChatMessage response_searchmessage=new ChatMessage();
+    public Stack<ChatMessage> searchList=new Stack<ChatMessage>();
+    public boolean sendSearchList=false;
+
+    //Add Friend
+    public ChatMessage request_addfriend=new ChatMessage();
+    public ChatMessage response_addfriend=new ChatMessage();
+    public boolean sendFriendRequest=false;
 
 
     protected AndroidChatClient(){
@@ -122,14 +132,6 @@ public class AndroidChatClient implements Runnable {
             // Log.i("send", "Setting to true");
             chatClient.send = true;*/
            calltimer();
-
-
-
-
-
-
-
-
         }
         catch(UnknownHostException uhe)
         {
@@ -292,6 +294,42 @@ public class AndroidChatClient implements Runnable {
                     break;
                 }
             }
+
+
+            if(sendSearchList == true){
+                try {
+                    if(request_searchmessage != null){
+                        Log.i("Time Line Command", request_searchmessage.command);
+                    }
+                    else {
+
+                    }
+                    dataOutputStream.writeObject(request_searchmessage);
+                    dataOutputStream.flush();
+                    sendSearchList = false;
+                }
+                catch (IOException e){
+                    stop();
+                    break;
+                }
+            }
+            if(sendFriendRequest == true){
+                try {
+                    if(request_addfriend != null){
+                        Log.i("Time Line Command", request_addfriend.command);
+                    }
+                    else {
+
+                    }
+                    dataOutputStream.writeObject(request_addfriend);
+                    dataOutputStream.flush();
+                    sendFriendRequest = false;
+                }
+                catch (IOException e){
+                    stop();
+                    break;
+                }
+            }
         }
     }
     public void handle(ChatMessage chmsg) {
@@ -326,6 +364,16 @@ public class AndroidChatClient implements Runnable {
         else if(chmsg != null && chmsg.command.equals("RESPONSE_GET_TIMELINE")){
             response_timeline = new ChatMessage();
             response_timeline = chmsg;
+        }
+
+        else if(chmsg!=null && chmsg.command.equals("RESPONSE_SEARCH_USER")){
+            response_searchmessage = new ChatMessage();
+            response_searchmessage = chmsg;
+        }
+
+        else if(chmsg!=null && chmsg.command.equals("RESPONSE_FRIEND_REQUEST")){
+            response_addfriend = new ChatMessage();
+            response_addfriend = chmsg;
         }
 
     }
@@ -387,6 +435,7 @@ public class AndroidChatClient implements Runnable {
         Log.i("Message:",response_historymessage.message);
         Log.i("SIZE:",String.valueOf(historymsglist.size()));
     }
+
     public void handle_OfflineMessage(ArrayList<String> chmsg){
         offlinemsglist = new ArrayList<String>();
         offlinemsglist=chmsg;
@@ -404,6 +453,33 @@ public class AndroidChatClient implements Runnable {
         Log.i("Command:",response_offlineMessageCheck.command);
         Log.i("Message:",response_offlineMessageCheck.message);
     }
+
+    public void handle_SearchList(Stack<ChatMessage> chmsg){
+       /* searchList = new Stack<ChatMessage>();
+        searchList=chmsg;
+        response_searchmessage = new ChatMessage();
+
+        if(searchList.size()>1)
+        {
+
+            response_searchmessage.command="RESPONSE_SEARCH_USER";
+            response_searchmessage.message="SUCCESS";
+        }
+        else{
+            response_searchmessage.command="RESPONSE_SEARCH_USER";
+            response_searchmessage.message="FAILURE";
+        }
+        Log.i("Command:",response_searchmessage.command);
+        Log.i("Message:",response_searchmessage.message);
+        Log.i("SIZE:",String.valueOf(searchList.size()));*/
+        response_searchmessage = new ChatMessage();
+        response_searchmessage=chmsg.pop();
+        Log.i("Command:",response_searchmessage.command);
+        Log.i("Message:",response_searchmessage.message);
+        searchList = new Stack<ChatMessage>();
+        searchList=chmsg;
+    }
+
     public void start() throws IOException
     {
 

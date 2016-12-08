@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:orientation="horizontal"
+    android:background="@android:color/transparent">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/searchUserImage"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_weight="1"
+        android:src="@drawable/image"
+        app:civ_border_color="#FF000000"
+        app:civ_border_width="2dp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/searchUserNickName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:text="@string/nick_name"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textColor="@android:color/holo_purple"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/searchUserEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:text="@string/email"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textColor="@android:color/white"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/searchUserStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:text="@string/online_or_offline"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textColor="@android:color/holo_green_dark"
+            android:textSize="14sp"
+            android:contentDescription="@string/online_or_offline"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/searchFriends"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:contentDescription=""
+                android:src="@drawable/friends"
+                android:background="@android:color/transparent" />
+
+            <ImageButton
+                android:id="@+id/searchAddFriend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:contentDescription=""
+                android:src="@drawable/addfriend"
+                android:background="@android:color/transparent" />
+
+            <ImageView
+                android:id="@+id/searchPendingFriend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:contentDescription=""
+                android:src="@drawable/pending"
+                android:background="@android:color/transparent" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1">
+
+            <ImageButton
+                android:id="@+id/searchChat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:contentDescription=""
+                android:src="@drawable/chat"
+                android:background="@android:color/transparent" />
+
+            <ImageButton
+                android:id="@+id/searchTimelineBtns"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:src="@drawable/timeline"
+                android:contentDescription=""
+                android:background="@android:color/transparent" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RadioGroup>
