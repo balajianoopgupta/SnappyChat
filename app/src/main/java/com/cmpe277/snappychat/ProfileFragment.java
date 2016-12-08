@@ -37,6 +37,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.*;
 
+import static android.app.Activity.RESULT_OK;
+
 public class ProfileFragment extends Fragment {
     private static final String TAG = "ProfileFragment";
     private static int RESULT_LOAD_IMAGE = 1;
@@ -44,13 +46,16 @@ public class ProfileFragment extends Fragment {
     Context ApplicationContext;
 
     private OnFragmentInteractionListener mListener;
-    Button logOut, editProfile, save, discard;
+    Button logOut, editProfile, save, discard, loadPictureBtn;
     Switch notificationSetting;
-    ImageButton picture;
+    ImageView picture;
     RadioButton r;
     RadioGroup rg;
     boolean isEnabled = false;
     String Loginemail;
+    private static int RESULT_LOAD_IMG = 1;
+    String imgDecodableString;
+    byte[] imgArray;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -90,7 +95,7 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(View view,
                               Bundle savedInstanceState) {
 
-        picture = (ImageButton) getView().findViewById(R.id.profilePicture);
+        picture = (ImageView) getView().findViewById(R.id.profilePicture);
         aboutme = (EditText) getView().findViewById(R.id.aboutme);
         nickname = (EditText) getView().findViewById(R.id.nickname);
         email = (EditText) getView().findViewById(R.id.email);
@@ -116,8 +121,15 @@ public class ProfileFragment extends Fragment {
         profession.setEnabled(isEnabled);
         interests.setEnabled(isEnabled);
 
-        logOut = (Button) view.findViewById(R.id.logOutBtn);
+        loadPictureBtn = (Button) view.findViewById(R.id.uploadButton);
+        loadPictureBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadImage(view);
+            }
+        });
 
+        logOut = (Button) view.findViewById(R.id.logOutBtn);
         logOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -255,6 +267,10 @@ public class ProfileFragment extends Fragment {
                                         Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
                                         picture.setImageBitmap(bitmap);
 
+//                                        byte[] arr= chmessage.pic;
+//                                        Bitmap bitmap = BitmapFactory.decodeByteArray(arr , 0, arr .length);
+//                                        picture.setImageBitmap(bitmap);
+
                                     }
                                 });
 
@@ -298,6 +314,15 @@ public class ProfileFragment extends Fragment {
         }
     }
 
+    public void loadImage(View view) {
+        // Create intent to Open Image applications like Gallery, Google Photos
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        // Start the Intent
+        startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
+    }
+
+
     public void showHideProfile() {
         aboutme.setEnabled(isEnabled);
         nickname.setEnabled(isEnabled);
@@ -305,16 +330,16 @@ public class ProfileFragment extends Fragment {
         location.setEnabled(isEnabled);
         profession.setEnabled(isEnabled);
         interests.setEnabled(isEnabled);
-        picture.setEnabled(isEnabled);
         if (isEnabled) {
             editProfile.setVisibility(View.INVISIBLE);
             save.setVisibility(View.VISIBLE);
             discard.setVisibility(View.VISIBLE);
+            loadPictureBtn.setVisibility(View.VISIBLE);
         } else {
             editProfile.setVisibility(View.VISIBLE);
-            save.setVisibility(View.VISIBLE);
-            discard.setVisibility(View.VISIBLE);
-
+            save.setVisibility(View.INVISIBLE);
+            discard.setVisibility(View.INVISIBLE);
+            loadPictureBtn.setVisibility(View.INVISIBLE);
         }
 
     }
@@ -401,7 +426,7 @@ public class ProfileFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == RESULT_LOAD_IMAGE && resultCode == Activity.RESULT_OK && null != data) {
+        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
             Uri selectedImage = data.getData();
             String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
@@ -415,7 +440,14 @@ public class ProfileFragment extends Fragment {
             cursor.close();
             Log.d("FILEPATH", picturePath);
 
-            picture.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+            Bitmap imgPath=BitmapFactory.decodeFile(picturePath);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            imgPath.compress(Bitmap.CompressFormat.PNG, 100, baos);
+            imgArray = baos.toByteArray();
+            Bitmap bitmap = BitmapFactory.decodeByteArray(imgArray , 0, imgArray .length);
+            picture.setImageBitmap(bitmap);
+
+           // picture.setImageBitmap(BitmapFactory.decodeFile(picturePath));
 
         }
     }
@@ -432,6 +464,7 @@ public class ProfileFragment extends Fragment {
         send_chmsg.notifications=notificationSetting.isEnabled();
         send_chmsg.visibility=AndroidChatClient.getInstance().radiobuttonid;
         send_chmsg.email=AndroidChatClient.getInstance().Loginemail;
+        //send_chmsg.pic=imgArray;
 
         Drawable drawable= ResourcesCompat.getDrawable(getResources(), R.drawable.image, null);
 

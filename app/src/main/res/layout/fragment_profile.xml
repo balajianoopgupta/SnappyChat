@@ -12,7 +12,7 @@
     <RelativeLayout android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-        <ImageButton
+        <ImageView
             android:layout_width="125dp"
             android:layout_height="125dp"
             app:srcCompat="@drawable/image"
@@ -21,10 +21,19 @@
             android:scaleType="fitCenter"
             android:layout_marginTop="20dp"/>
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/profilePicture"
+            android:text="Upload Image"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/uploadButton"
+            android:onClick="loadImage"/>
+
         <RadioGroup
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/profilePicture"
+            android:layout_below="@id/uploadButton"
             android:id="@+id/profileInfo">
 
             <TextView
