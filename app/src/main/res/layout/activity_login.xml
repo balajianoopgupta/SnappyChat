@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_login"
     android:layout_width="match_parent"
@@ -8,15 +9,30 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.cmpe277.snappychat.LoginActivity">
+    tools:context="com.cmpe277.snappychat.LoginActivity"
+    android:background="@color/cardview_shadow_start_color">
 
+
+    <TextView
+        android:text="Welcome to Snappy Chat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:id="@+id/titleText"
+        android:textSize="24sp"
+        android:textStyle="normal|bold"
+        android:fontFamily="cursive"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="@android:color/holo_red_light" />
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true">
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="44dp">
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/google_sign_in_button"
@@ -35,21 +51,14 @@
             android:layout_marginTop="25dp" />
     </LinearLayout>
 
-    <TextView
-        android:text="Welcome to Snappy Chat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/titleText" />
 
     <ImageView
         android:layout_width="200dp"
-        android:layout_height="110dp"
+        android:layout_height="200dp"
+        app:srcCompat="@drawable/welcome"
         android:id="@+id/imageView"
         android:layout_below="@+id/titleText"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="53dp"
-        android:src="@drawable/welcomeicon"
-        />
+        android:layout_marginTop="39dp" />
 
 </RelativeLayout>
