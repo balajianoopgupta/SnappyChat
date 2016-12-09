@@ -39,9 +39,17 @@
         android:text="Welcome to Snappy Chat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="68dp"
         android:id="@+id/titleText" />
+
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="110dp"
+        android:id="@+id/imageView"
+        android:layout_below="@+id/titleText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="53dp"
+        android:src="@drawable/welcomeicon"
+        />
 
 </RelativeLayout>
