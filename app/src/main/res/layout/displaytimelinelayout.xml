@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:orientation="horizontal">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/userTimelineImage"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@drawable/image"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_weight="1"
+        app:civ_border_width="2dp"
+        app:civ_border_color="#FF000000"
+        app:srcCompat="@drawable/image" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="3">
+
+        <TextView
+            android:id="@+id/userTimelineNickName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:paddingTop="10dp"
+            android:text="@string/nick_name"
+            android:textColor="@android:color/holo_purple"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:layout_weight="1"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/userTimelineStatusMess"
+            android:scrollbars="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:ellipsize="end"
+            android:text="@string/userStatusMessage"
+            android:textColor="@android:color/white"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:layout_weight="1"
+            android:textSize="14sp"
+            android:layout_marginTop="5dp" />
+
+        <TextView
+            android:id="@+id/userTimelineTimeStamp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:ellipsize="end"
+            android:text="@string/time_stamp"
+            android:textColor="@android:color/holo_green_dark"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:layout_weight="1"
+            android:textSize="14sp"
+            android:layout_gravity="start"
+            android:textAlignment="viewStart"
+            android:layout_marginTop="5dp" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/userTimelineLikeCount"
+                android:layout_marginTop="10dp"
+                android:text="1"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/userTimelineLikeBtn"
+                android:src="@drawable/like16"
+                android:paddingLeft="10dp"
+                android:layout_weight="1"
+                android:contentDescription="" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/userTimelineDislikeCount"
+                android:paddingLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:text="1"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/userTimelineDislikeBtn"
+                android:src="@drawable/dislike16"
+                android:paddingLeft="10dp"
+                android:layout_weight="0"
+                android:contentDescription="" />
+        </LinearLayout>
+
+    </LinearLayout>
+</RadioGroup>
+
