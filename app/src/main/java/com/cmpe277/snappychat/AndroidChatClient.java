@@ -397,8 +397,11 @@ public class AndroidChatClient implements Runnable {
     public void handle_TimeLineList(Stack<ChatMessage> chmsg){
         response_timeline = new ChatMessage();
         response_timeline = chmsg.pop();
-        timeLineList = new Stack<>();
+        Log.i("TimeLineCommand:",response_timeline.command);
+        Log.i("TimeLineMessage:",response_timeline.message);
+        timeLineList = new Stack<ChatMessage>();
         timeLineList = chmsg;
+
     }
 
     public void handle_FriendList(Stack<ChatMessage> chmsg)
@@ -455,23 +458,6 @@ public class AndroidChatClient implements Runnable {
     }
 
     public void handle_SearchList(Stack<ChatMessage> chmsg){
-       /* searchList = new Stack<ChatMessage>();
-        searchList=chmsg;
-        response_searchmessage = new ChatMessage();
-
-        if(searchList.size()>1)
-        {
-
-            response_searchmessage.command="RESPONSE_SEARCH_USER";
-            response_searchmessage.message="SUCCESS";
-        }
-        else{
-            response_searchmessage.command="RESPONSE_SEARCH_USER";
-            response_searchmessage.message="FAILURE";
-        }
-        Log.i("Command:",response_searchmessage.command);
-        Log.i("Message:",response_searchmessage.message);
-        Log.i("SIZE:",String.valueOf(searchList.size()));*/
         response_searchmessage = new ChatMessage();
         response_searchmessage=chmsg.pop();
         Log.i("Command:",response_searchmessage.command);
