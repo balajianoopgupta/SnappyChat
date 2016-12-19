@@ -26,7 +26,6 @@ public class ChatMessage implements Serializable {
     public boolean notifications;//Default true
     public String usertype;
     public boolean status;
-    public String statusMessage;
 
 }
 
