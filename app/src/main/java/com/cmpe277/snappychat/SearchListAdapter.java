@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Parcelable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -20,6 +21,7 @@ import java.io.ByteArrayInputStream;
 import java.util.List;
 
 import static com.cmpe277.snappychat.R.id.acceptBtn;
+import static com.cmpe277.snappychat.R.id.time;
 import static com.cmpe277.snappychat.R.id.view_offset_helper;
 
 /**
@@ -55,6 +57,17 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Vi
 
             chat = (ImageButton) itemView.findViewById(R.id.searchChat);
             timeline = (ImageButton) itemView.findViewById(R.id.searchTimelineBtns);
+
+//            timeline.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    Intent i = new Intent(context, TimelineActivity.class);
+//                    i.putExtra("ToEmail",userEmail.getText().toString());
+//
+//                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    context.startActivity(i);
+//                }
+//            });
 
         }
     }
@@ -125,6 +138,19 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Vi
                 addFriend(viewH.getAdapterPosition(), viewH);
             }
         });
+
+        holder.timeline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(context, TimelineActivity.class);
+                i.putExtra("UserEmail",holder.userEmail.getText().toString());
+                i.putExtra("UserNickName",holder.userName.getText().toString());
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(i);
+            }
+        });
+
+
 
     }
 

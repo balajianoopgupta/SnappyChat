@@ -2,8 +2,12 @@ package com.cmpe277.snappychat;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.io.ByteArrayInputStream;
 import java.util.List;
 
@@ -22,23 +28,30 @@ import java.util.List;
  * Created by balaji.byrandurga on 12/6/16.
  */
 
-public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.ViewHolder>{
+public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.ViewHolder> {
 
     private List<ChatMessage> itemList;
     private Context context;
-    private TimeLineAdapter.ItemClickListener clickListener;
+    private ItemClickListener clickListener;
     Context ApplicationContext;
     Activity activity;
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView userStatusMessage, timeStamp;
-        ImageView statusImage;
 
-        public ViewHolder(View timelinelistlayout) {
-            super(timelinelistlayout);
-            statusImage = (ImageView) itemView.findViewById(R.id.statusImage);
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        TextView userStatusMessage, timeStamp, timelineNickName, likeCount, dislikeCount;
+        ImageView timelineImage;
+        ImageButton likeBtn, dislikeBtn;
+
+        public ViewHolder(View friendlistlayout) {
+            super(friendlistlayout);
+            timelineNickName = (TextView) itemView.findViewById(R.id.timelineNickName);
             userStatusMessage = (TextView) itemView.findViewById(R.id.userStatusMess);
             timeStamp = (TextView) itemView.findViewById(R.id.timeStamp);
+            timelineImage = (ImageView) itemView.findViewById(R.id.timelineImage);
+            likeBtn = (ImageButton) itemView.findViewById(R.id.likeBtn);
+            dislikeBtn = (ImageButton) itemView.findViewById(R.id.dislikeBtn);
+            likeCount = (TextView) itemView.findViewById(R.id.likeCount);
+            dislikeCount = (TextView) itemView.findViewById(R.id.dislikeCount);
         }
     }
 
@@ -54,69 +67,65 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.ViewHo
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.timelinelistlayout, parent, false);
 
         // set the view's size, margins, paddings and layout parameters
-        TimeLineAdapter.ViewHolder vh = new TimeLineAdapter.ViewHolder(v);
+        ViewHolder vh = new ViewHolder(v);
         return vh;
     }
+
 
     @Override
     public void onBindViewHolder(final TimeLineAdapter.ViewHolder holder, final int position) {
 
-        ByteArrayInputStream is = new ByteArrayInputStream(itemList.get(position).pic);
-        Bitmap bitmap = BitmapFactory.decodeStream(is);
-        holder.statusImage.setImageBitmap(bitmap);
+        holder.timelineNickName.setText(itemList.get(position).nickname);
+        holder.userStatusMessage.setText(itemList.get(position).message);
+        holder.timeStamp.setText(itemList.get(position).senddatetime.toString());
+        holder.timeStamp.setText(itemList.get(position).senddatetime.toString());
+        if(itemList.get(position).pic == null){
+            Drawable draw = ContextCompat.getDrawable(context, R.drawable.image);
+            holder.timelineImage.setImageDrawable(draw);
+            holder.timelineImage.setTag(holder);
+        }
+        else{
+            ByteArrayInputStream is = new ByteArrayInputStream(itemList.get(position).pic);
+            Bitmap bitmap = BitmapFactory.decodeStream(is);
+            holder.timelineImage.setImageBitmap(bitmap);
+            holder.timelineImage.setTag(holder);
+        }
 
-        holder.statusImage.setTag(holder);
-
-        //Display User Status
-        holder.userStatusMessage.setText(itemList.get(position).statusMessage);
-        holder.timeStamp.setText((CharSequence) itemList.get(position).senddatetime);
-        //holder.usertype.setText(itemList.get(position).usertype);
-//        if (itemList.get(position).usertype.equals("FRIENDS")) {
-//            holder.friends.setVisibility(View.VISIBLE);
-//            holder.pending.setVisibility(View.INVISIBLE);
-//            holder.acceptBtn.setVisibility(View.INVISIBLE);
-//            holder.rejectBtn.setVisibility(View.INVISIBLE);
-//        } else if (itemList.get(position).usertype.equals("PENDING")) {
-//            holder.friends.setVisibility(View.INVISIBLE);
-//            holder.pending.setVisibility(View.VISIBLE);
-//            holder.acceptBtn.setVisibility(View.INVISIBLE);
-//            holder.rejectBtn.setVisibility(View.INVISIBLE);
-//        } else if (itemList.get(position).usertype.equals("ACCEPT_REJECT")) {
-//            holder.friends.setVisibility(View.INVISIBLE);
-//            holder.pending.setVisibility(View.INVISIBLE);
-//            holder.acceptBtn.setVisibility(View.VISIBLE);
-//            holder.rejectBtn.setVisibility(View.VISIBLE);
-//        }
-
-            final TimeLineAdapter.ViewHolder viewH = holder;
-        Send_Accept_Reject(viewH.getAdapterPosition(), viewH);
-//        holder.acceptBtn.setOnClickListener(new View.OnClickListener() {
+//        holder.likeCount.setText(itemList.get(position).likeCount);
+//        holder.likeBtn.setVisibility(View.VISIBLE);
+//
+//        holder.dislikeCount.setText(itemList.get(position).dislikeCount);
+//        holder.dislikeBtn.setVisibility(View.VISIBLE);
+//
+//        final ViewHolder viewH = holder;
+//        holder.likeBtn.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                boolean Accept_Reject = true;
+//                boolean Like_Dislike = true;
 //                //TextView ustype = (TextView) v.findViewById(R.id.usertype);
 //                //Log.i("EMAIL ON CLICK",ustype.getText().toString());
 //                //  Log.i("Accept_Reject userImage",String.valueOf(Accept_Reject));
 //                //Log.i("position = ", String.valueOf( viewH.getAdapterPosition()));
 //
-//                Send_Accept_Reject(Accept_Reject, viewH.getAdapterPosition(), viewH);
+//                //Send_Like_Dislike(Like_Dislike, viewH.getAdapterPosition(), viewH);
 //            }
 //        });
 //
-//        holder.rejectBtn.setOnClickListener(new View.OnClickListener() {
+//        holder.dislikeBtn.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                boolean Accept_Reject = false;
+//                boolean Like_Dislike = false;
 //                //TextView ustype = (TextView) v.findViewById(R.id.usertype);
 //                //Log.i("EMAIL ON CLICK",ustype.getText().toString());
 //                // Log.i("Accept_Reject userImage",String.valueOf(Accept_Reject));
 //                //Log.i("position = ", String.valueOf( viewH.getAdapterPosition()));
-//                Send_Accept_Reject(Accept_Reject, viewH.getAdapterPosition(), viewH);
+//
+//                //Send_Like_Dislike(Like_Dislike, viewH.getAdapterPosition(), viewH);
 //            }
 //        });
     }
 
-    public void setClickListener(TimeLineAdapter.ItemClickListener itemClickListener) {
+    public void setClickListener(ItemClickListener itemClickListener) {
         this.clickListener = itemClickListener;
     }
 
@@ -129,33 +138,53 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.ViewHo
         public void itemClick(View view, int position);
     }
 
-    public void Send_Accept_Reject(final int pos, final TimeLineAdapter.ViewHolder viewHolder) {
-        final String usremail = itemList.get(pos).email;
 
+    public void Send_Like_Dislike(boolean l_d, final int pos, final FriendsListAdapter.ViewHolder viewHolder) {
+
+        Log.i("EMAIL", itemList.get(pos).email);
+        Log.i("Like_Dislike", String.valueOf(l_d));
+        final String usremail = itemList.get(pos).email;
+        final String response;
+        if (l_d) {
+            response = "LIKE";
+        } else {
+            response = "DISLIKE";
+        }
         new Thread(new Runnable() {
             public void run() {
                 AndroidChatClient chatClient = AndroidChatClient.getInstance();
-                chatClient.request_timeline = new ChatMessage();
-                chatClient.request_timeline.command = "GET_TIMELINE_DATA";
-                chatClient.request_timeline.email = usremail;
+                chatClient.request_accept_reject = new ChatMessage();
+                chatClient.request_accept_reject.command = "ACCEPT_REJECT_FRIEND_REQUEST";
+                chatClient.request_accept_reject.email = usremail;
+                chatClient.request_accept_reject.message = response;
                 Log.i("send", "Setting to true");
-                //chatClient.sendacceptreject = true;
+                chatClient.sendacceptreject = true;
                 boolean checkresponse = false;
                 while (!checkresponse) {
                     // Log.i("herer","response");
-                    if (chatClient.response_timeline != null && chatClient.response_timeline.command != null) {
-                        if (chatClient.response_timeline.command.equals("RESPONSE_GET_TIMELINE")) {
+                    if (chatClient.response_accept_reject != null && chatClient.response_accept_reject.command != null) {
+                        if (chatClient.response_accept_reject.command.equals("RESPONSE_ACCEPT_REJECT_FRIEND_REQUEST")) {
                             //ChatMessage chmessage = new ChatMessage();
-                            final ChatMessage chmessage = chatClient.response_timeline;
+                            final ChatMessage chmessage = chatClient.response_accept_reject;
                             checkresponse = true;
                             if (!chmessage.message.equals("FAILURE")) {
-                                //update profile
-                                ///storage/sdcard/DCIM/Camera/IMG_20161128_085625.jpg
 
                                 activity.runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
 
+                                        //if accept then displays friends image and hide accept and reject buttons
+                                        if (response.equals("ACCEPT")) {
+                                            viewHolder.friends.setVisibility(View.VISIBLE);
+                                            viewHolder.acceptBtn.setVisibility(View.INVISIBLE);
+                                            viewHolder.rejectBtn.setVisibility(View.INVISIBLE);
+                                        }
+
+                                        //if reject was selected remove item from itemlist
+                                        if (response.equals("REJECT")) {
+                                            itemList.remove(pos);
+                                            notifyDataSetChanged();
+                                        }
                                     }
                                 });
                             }
@@ -165,4 +194,5 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.ViewHo
             }
         }).start();
     }
+
 }
