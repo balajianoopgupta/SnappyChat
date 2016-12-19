@@ -43,6 +43,7 @@
             android:name=".MainActivity"
             android:theme="@style/Theme.Design.NoActionBar" />
         <activity android:name=".ChatActivity"></activity>
+        <activity android:name=".TimelineActivity"></activity>
     </application>
 
 </manifest>
