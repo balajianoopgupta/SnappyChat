@@ -132,8 +132,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     new Thread(new Runnable() {
                         public void run() {
                             AndroidChatClient client=AndroidChatClient.getInstance();
-                          //  client.createconnection("192.168.0.130", 9999,loginemaild);
-                            client.createconnection("192.168.0.128", 9999,loginemaild);
+                          client.createconnection("192.168.0.119", 9999,loginemaild);
                         }
                     }).start();
 
@@ -193,16 +192,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
         Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT).show();
     }
-
-//    @Override
-//    public void onClick(View view) {
-//        switch (view.getId()) {
-//            case R.id.google_sign_in_button:
-//                googleSignIn();
-//                break;
-//            // ...
-//        }
-//    }
 
     private void googleSignIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
