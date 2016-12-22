@@ -42,7 +42,6 @@
             android:id="@+id/userStatusMess"
             android:scrollbars="vertical"
             android:layout_width="match_parent"
-            android:layout_height="25dp"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
             android:ellipsize="end"
@@ -51,7 +50,8 @@
             android:textAppearance="?attr/textAppearanceListItem"
             android:layout_weight="1"
             android:textSize="14sp"
-            android:layout_marginTop="5dp" />
+            android:layout_marginTop="5dp"
+            android:layout_height="40dp" />
 
         <TextView
             android:id="@+id/timeStamp"
@@ -78,8 +78,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/likeCount"
-                android:layout_marginTop="10dp"
-                android:text="1"/>
+                android:layout_marginTop="10dp" />
 
             <ImageButton
                 android:layout_width="wrap_content"
@@ -95,8 +94,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/dislikeCount"
                 android:paddingLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:text="1"/>
+                android:layout_marginTop="10dp" />
 
             <ImageButton
                 android:layout_width="wrap_content"

@@ -36,7 +36,7 @@ public class DisplayTimelineAdapter extends RecyclerView.Adapter<DisplayTimeline
 
         public ViewHolder(View displaytimelinelayout) {
             super(displaytimelinelayout);
-            userTimelineNickName = (TextView) itemView.findViewById(R.id.userTimelineNickName);
+            //userTimelineNickName = (TextView) itemView.findViewById(R.id.userTimelineNickName);
             userTimelineStatusMess = (TextView) itemView.findViewById(R.id.userTimelineStatusMess);
             userTimelineTimeStamp = (TextView) itemView.findViewById(R.id.userTimelineTimeStamp);
             userTimelineImage = (ImageView) itemView.findViewById(R.id.userTimelineImage);
@@ -67,8 +67,8 @@ public class DisplayTimelineAdapter extends RecyclerView.Adapter<DisplayTimeline
     @Override
     public void onBindViewHolder(final DisplayTimelineAdapter.ViewHolder holder, final int position) {
 
-        holder.userTimelineNickName.setText(itemList.get(position).nickname);
-        holder.userTimelineNickName.setText(itemList.get(position).message);
+        //holder.userTimelineNickName.setText(itemList.get(position).nickname);
+        holder.userTimelineStatusMess.setText(itemList.get(position).message);
         holder.userTimelineTimeStamp.setText(itemList.get(position).senddatetime.toString());
 
         if(itemList.get(position).pic == null){
